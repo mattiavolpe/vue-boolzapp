@@ -30,7 +30,40 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   height: 94%;
-  background-color: black;
 }
 
 /* #endregion Common */
+
+/* #region Utility */
+
+.content_wrapper {
+  height: 100%;
+}
+
+.left_section {
+  width: 30%;
+  min-width: 200px;
+  height: 100%;
+  background-color: red;
+}
+
+.right_section {
+  flex-grow: 1;
+  height: 100%;
+  background-color: blue;
+}
+
+.top_app {
+  height: 70px;
+  background-color: var(--bzap_headers_overlays);
+}
+
+#header_right {
+  border: 1px solid var(--bzap_icon);
+}
+
+.icon_color {
+  color: var(--bzap_icon);
+}
+
+/* #endregion Utility */
