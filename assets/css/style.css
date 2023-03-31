@@ -1,0 +1,36 @@
+/* #region Common */
+
+:root {
+  --bzap_font_family: Helvetica, sans-serif;
+  --bzap_bg_primary: #009688;
+  --bzap_bg_neutral: #dadbd3;
+  --bzap_headers_overlays: #eaeaea;
+  --bzap_notification: #8edafc;
+  --bzap_sent: #d5f9ba;
+  --bzap_bg_message_section: #f3eeea;
+  --bzap_icon: #b1b1b1;
+  --bzap_white: #ffffff;
+  --bzap_dark: #1e1e1e;
+}
+
+body {
+  height: 100vh;
+  height: 100svh;
+  background: linear-gradient(180deg, var(--bzap_bg_primary) 0%, var(--bzap_bg_primary) 15%, var(--bzap_bg_neutral) 15%, var(--bzap_bg_neutral) 100%);
+}
+
+#app {
+  position: relative;
+  height: 100%;
+}
+
+.container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 94%;
+  background-color: black;
+}
+
+/* #endregion Common */
