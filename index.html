@@ -21,134 +21,143 @@
   <body>
     
     <div id="app">
+
+      <!-- CONTAINER FLUID ADDED TO HAVE A FULL-WIDTH AND FULL-HEIGHT ELEMENT TO CLICK ON TO MAKE MESSAGE DELETION DROPDOWN DISAPPEAR -->
+      <div class="container-fluid p-0" @click="messageToRemove = -1">
       
-      <div class="container d-flex">
+        <div class="container d-flex">
 
-            <div id="left_section">
-              
-              <div id="header_left" class="top_app d-flex justify-content-between align-items-center px-3">
-                <div class="d-flex align-items-center">
-                  <img width="50" class="rounded-circle me-3" src="./assets/img/avatar_io.jpg" alt="User profile image">
-                  <div>
-                    <h5 class="m-0">Sofia</h5>
-                  </div>
-                </div>
-                <ul class="d-flex align-items-center list-unstyled m-0 icon_color">
-                  <li>
-                    <i class="fa-solid fa-circle-notch fa-lg"></i>
-                  </li>
-                  <li class="mx-3">
-                    <i class="fa-solid fa-message"></i>
-                  </li>
-                  <li>
-                    <i class="fa-solid fa-ellipsis-vertical fa-lg"></i>
-                  </li>
-                </ul>
-              </div>
-              <!-- /#header_left.top_app -->
-
-              <div id="activate_notification" class="d-flex align-items-center px-3">
-                <div class="notification_icon_container me-3">
-                  <i class="fa-solid fa-bell-slash"></i>
-                </div>
-                <!-- /.notification_icon_container -->
-                <div class="activate_notification_text">
-                  <h6 class="m-0">Receive new messages notification</h6>
-                  <span class="text-decoration-underline icon_color_dark">Activate desktop notifications</span>
-                </div>
-                <!-- /.activate_notification_text -->
-              </div>
-              <!-- /#activate_notification -->
-
-              <div id="search_contact" class="d-flex align-items-center px-3">
-
-                <div class="d-flex w-100">
-                  <label class="d-flex justify-content-center align-items-center bg-white px-4 icon_color" for="search_contact_input">
-                    <i class="fa-solid fa-magnifying-glass fa-fw"></i>
-                  </label>
-                  <input class="text_dark flex-grow-1" type="text" id="search_contact_input" v-model="contactToSearch">
-                </div>
-                <!-- /.d-flex -->
-
-              </div>
-              <!-- /#search_contact -->
-
-              <ul id="contacts_list" class="m-0 bg-white p-0">
-
-                <li class="contact justify-content-between align-items-center px-3" :class="contactToSearch.trim() === '' || searchContacts(contact) ? 'd-flex' : '', activeContact === index ? 'active' : '' "v-for="(contact, index) in contacts" @click="activeContact = index" v-show="contactToSearch.trim() === '' || searchContacts(contact)">
-                  <div class="left_contact_section d-flex align-items-start">
-                    <img width="60" class="rounded-circle me-3" :src="`./assets/${contact.avatar.slice(2, contact.avatar.length - 4)}.jpg`" :alt="`${contact.name} image`">
+              <div id="left_section">
+                
+                <div id="header_left" class="top_app d-flex justify-content-between align-items-center px-3">
+                  <div class="d-flex align-items-center">
+                    <img width="50" class="rounded-circle me-3" src="./assets/img/avatar_io.jpg" alt="User profile image">
                     <div>
-                      <h6 class="m-0">{{contact.name}}</h6>
-                      <span v-if="contact.messages.length > 0" class="icon_color_dark">{{contact.messages[contact.messages.length - 1].message}}</span>
+                      <h5 class="m-0">Sofia</h5>
                     </div>
                   </div>
-                  <div class="right_contact_section d-flex align-items-start">
-                    <span v-if="contact.messages.length > 0" class="last_message_time icon_color_dark">{{contact.messages[contact.messages.length - 1].date.slice(11, 16)}}</span>
-                  </div>
-                </li>
-                <!-- /.contact -->
-                
-              </ul>
-              <!-- /#contacts_list -->
-
-            </div>
-            <!-- /.left_section -->
-
-            <div id="right_section">
-
-              <div id="header_right" class="top_app d-flex justify-content-between align-items-center px-3">
-                <div class="d-flex align-items-center">
-                  <img width="50" class="rounded-circle me-3" :src="`./assets/${contacts[activeContact].avatar.slice(2, contacts[activeContact].avatar.length - 4)}.jpg`" :alt="`${contacts[activeContact].name} image`">
-                  <div>
-                    <h5 class="m-0">{{contacts[activeContact].name}}</h5>
-                    <span class="m-0 icon_color">Last seen today at {{generateRandomAccess()}}</span>
-                  </div>
+                  <ul class="d-flex align-items-center list-unstyled m-0 icon_color">
+                    <li>
+                      <i class="fa-solid fa-circle-notch fa-lg"></i>
+                    </li>
+                    <li class="mx-3">
+                      <i class="fa-solid fa-message"></i>
+                    </li>
+                    <li>
+                      <i class="fa-solid fa-ellipsis-vertical fa-lg"></i>
+                    </li>
+                  </ul>
                 </div>
-                <ul class="d-flex align-items-center list-unstyled m-0 icon_color">
-                  <li>
-                    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+                <!-- /#header_left.top_app -->
+
+                <div id="activate_notification" class="d-flex align-items-center px-3">
+                  <div class="notification_icon_container me-3">
+                    <i class="fa-solid fa-bell-slash"></i>
+                  </div>
+                  <!-- /.notification_icon_container -->
+                  <div class="activate_notification_text">
+                    <h6 class="m-0">Receive new messages notification</h6>
+                    <span class="text-decoration-underline icon_color_dark">Activate desktop notifications</span>
+                  </div>
+                  <!-- /.activate_notification_text -->
+                </div>
+                <!-- /#activate_notification -->
+
+                <div id="search_contact" class="d-flex align-items-center px-3">
+
+                  <div class="d-flex w-100">
+                    <label class="d-flex justify-content-center align-items-center bg-white px-4 icon_color" for="search_contact_input">
+                      <i class="fa-solid fa-magnifying-glass fa-fw"></i>
+                    </label>
+                    <input class="text_dark flex-grow-1" type="text" id="search_contact_input" v-model="contactToSearch">
+                  </div>
+                  <!-- /.d-flex -->
+
+                </div>
+                <!-- /#search_contact -->
+
+                <ul id="contacts_list" class="m-0 bg-white p-0">
+
+                  <li class="contact justify-content-between align-items-center px-3" :class="contactToSearch.trim() === '' || searchContacts(contact) ? 'd-flex' : '', activeContact === index ? 'active' : '' "v-for="(contact, index) in contacts" @click="activeContact = index" v-show="contactToSearch.trim() === '' || searchContacts(contact)">
+                    <div class="left_contact_section d-flex align-items-start">
+                      <img width="60" class="rounded-circle me-3" :src="`./assets/${contact.avatar.slice(2, contact.avatar.length - 4)}.jpg`" :alt="`${contact.name} image`">
+                      <div>
+                        <h6 class="m-0">{{contact.name}}</h6>
+                        <span v-if="contact.messages.length > 0" class="icon_color_dark">{{contact.messages[contact.messages.length - 1].message}}</span>
+                      </div>
+                    </div>
+                    <div class="right_contact_section d-flex align-items-start">
+                      <span v-if="contact.messages.length > 0" class="last_message_time icon_color_dark">{{contact.messages[contact.messages.length - 1].date.slice(11, 16)}}</span>
+                    </div>
                   </li>
-                  <li class="mx-3">
-                    <i class="fa-solid fa-paperclip fa-lg"></i>
-                  </li>
-                  <li>
-                    <i class="fa-solid fa-ellipsis-vertical fa-lg"></i>
-                  </li>
+                  <!-- /.contact -->
+                  
                 </ul>
+                <!-- /#contacts_list -->
+
               </div>
-              <!-- /#header_right.top_app -->
+              <!-- /.left_section -->
 
-              <main id="right_main_content" class="px-5 py-3 d-flex flex-column-reverse flex-shrink-0">
+              <div id="right_section">
 
-                <div class="message" v-for="message in contacts[activeContact].messages.slice().reverse()">
-                  <div class="d-flex justify-content-between" :class="message.status === 'sent' ? 'sent_message' : 'received_message'">
-                    <span class="text">{{message.message}}</span>
-                    <div class="right_message_section d-flex flex-column justify-content-between align-self-stretch">
-                      <span class="text-end">
-                        <i @click="removeMessage(message)" class="fa-solid fa-angle-down fa-lg icon_color text-end"></i>
-                      </span>
-                      <span class="icon_color text-end align-self-end">{{message.date.slice(11, 16)}}</span>
+                <div id="header_right" class="top_app d-flex justify-content-between align-items-center px-3">
+                  <div class="d-flex align-items-center">
+                    <img width="50" class="rounded-circle me-3" :src="`./assets/${contacts[activeContact].avatar.slice(2, contacts[activeContact].avatar.length - 4)}.jpg`" :alt="`${contacts[activeContact].name} image`">
+                    <div>
+                      <h5 class="m-0">{{contacts[activeContact].name}}</h5>
+                      <span class="m-0 icon_color">Last seen today at {{generateRandomAccess()}}</span>
                     </div>
                   </div>
+                  <ul class="d-flex align-items-center list-unstyled m-0 icon_color">
+                    <li>
+                      <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+                    </li>
+                    <li class="mx-3">
+                      <i class="fa-solid fa-paperclip fa-lg"></i>
+                    </li>
+                    <li>
+                      <i class="fa-solid fa-ellipsis-vertical fa-lg"></i>
+                    </li>
+                  </ul>
                 </div>
-                <!-- /.message -->
-                
-              </main>
-              <!-- /#right_main_content -->
+                <!-- /#header_right.top_app -->
 
-              <div id="bottom_right" class="bottom_app d-flex justify-content-around align-items-center px-3">
-                <i class="fa-regular fa-face-smile icon_color_dark fa-lg"></i>
-                <input type="text" class="form-control border-0 text_dark" name="newMessage" id="newMessage" placeholder="Write a new message" v-model.trim="newMessage" @keydown.enter="sendNewMessage()">
-                <i class="fa-solid fa-microphone icon_color_dark fa-lg"></i>
+                <main id="right_main_content" class="px-5 py-3 d-flex flex-column-reverse flex-shrink-0">
+
+                  <div class="message" v-for="(message, index) in contacts[activeContact].messages.slice().reverse()">
+                    <div class="d-flex justify-content-between" :class="message.status === 'sent' ? 'sent_message' : 'received_message'">
+                      <span class="text">{{message.message}}</span>
+                      <div class="right_message_section d-flex flex-column justify-content-between align-self-stretch">
+                        <span @click.stop="messageToRemove = index" class="text-end">
+                          <i class="fa-solid fa-angle-down fa-lg icon_color text-end"></i>
+                        </span>
+                        <span class="message_time icon_color text-end align-self-end">{{message.date.slice(11, 16)}}</span>
+                      </div>
+                      <div class="delete_message_dropdown icon_color_dark" :class="{'d-none': index != messageToRemove}">
+                        <span @click="removeMessage(message)">Delete message</span>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- /.message -->
+                  
+                </main>
+                <!-- /#right_main_content -->
+
+                <div id="bottom_right" class="bottom_app d-flex justify-content-around align-items-center px-3">
+                  <i class="fa-regular fa-face-smile icon_color_dark fa-lg"></i>
+                  <input type="text" class="form-control border-0 text_dark" name="newMessage" id="newMessage" placeholder="Write a new message" v-model.trim="newMessage" @keydown.enter="sendNewMessage()">
+                  <i class="fa-solid fa-microphone icon_color_dark fa-lg"></i>
+                </div>
+                <!-- /#bottom_right.bottom_app -->
+
               </div>
-              <!-- /#bottom_right.bottom_app -->
+              <!-- /.right_section -->
 
-            </div>
-            <!-- /.right_section -->
+        </div>
+        <!-- /.container -->
 
       </div>
-      <!-- /.container -->
+      <!-- /.container-fluid -->
       
     </div>
     <!-- /#app -->

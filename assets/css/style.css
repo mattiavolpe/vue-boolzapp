@@ -42,6 +42,10 @@ body {
   color: var(--bzap_icon_dark);
 }
 
+.container-fluid {
+  height: 100%;
+}
+
 .container {
   height: 100%;
   padding: 3vh 0;
@@ -56,7 +60,6 @@ body {
   width: 30%;
   min-width: 290px;
   height: 100%;
-  background-color: red;
 }
 
 #right_section {
@@ -117,7 +120,7 @@ body {
 
 #contacts_list {
   /* Heights to consider: header_left, activate_notification and search_contact */
-  height: calc(100% - 200px);
+  height: calc(100% - 205px);
   overflow-y: auto;
 }
 
@@ -169,8 +172,25 @@ body {
   background-color: var(--bzap_white);
 }
 
+.message > div {
+  position: relative;
+}
+
 .message .right_message_section {
   font-size: 10px;
+}
+
+.delete_message_dropdown {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 50%;
+  text-align: center;
+  padding: 0.5rem 0;
+  border-radius: 3px;
+  box-shadow: -2px 2px 5px 0 var(--bzap_icon_dark);
+  background-color: var(--bzap_white);
+  font-size: 0.875rem;
 }
 
 .bottom_app {

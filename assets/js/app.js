@@ -29,6 +29,7 @@ createApp({
       activeContact: 0,
       newMessage: null,
       contactToSearch: "",
+      messageToRemove: -1,
       contacts: [
         {
           name: 'Michele',
@@ -259,6 +260,7 @@ createApp({
     },
     removeMessage(message, index) {
       this.contacts[this.activeContact].messages.splice(this.contacts[this.activeContact].messages.indexOf(message), 1);
+      this.messageToRemove = -1
     }
   }
 }).mount('#app')
