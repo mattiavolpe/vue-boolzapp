@@ -218,6 +218,7 @@ createApp({
         status: 'sent'
       }
       this.contacts[this.activeContact].messages.push(newMessageObject);
+      this.scrollToBottom();
       this.newMessage = null;
       this.sendAnswer();
     },
@@ -261,6 +262,11 @@ createApp({
     removeMessage(message, index) {
       this.contacts[this.activeContact].messages.splice(this.contacts[this.activeContact].messages.indexOf(message), 1);
       this.messageToRemove = -1
+    },
+    // FUNCTION USED TO SCROLL TO THE NEWEST MESSAGE WHEN A NEW MESSAGE IS SENT / RECEIVED
+    scrollToBottom() {
+      const mainContent = document.getElementById("right_main_content");
+      mainContent.scrollTo(0, 0);
     }
   }
 }).mount('#app')
