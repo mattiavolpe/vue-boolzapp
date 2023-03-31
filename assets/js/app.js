@@ -21,6 +21,8 @@ Cancella messaggio: cliccando sul messaggio appare un menu a tendina che permett
 Visualizzazione ora e ultimo messaggio inviato/ricevuto nella lista dei contatti
 */
 
+[].s
+
 const { createApp } = Vue
   
 createApp({
@@ -253,6 +255,9 @@ createApp({
       else {
         return false;
       }
+    },
+    removeMessage(message, index) {
+      this.contacts[this.activeContact].messages.splice(this.contacts[this.activeContact].messages.indexOf(message), 1);
     }
   }
 }).mount('#app')

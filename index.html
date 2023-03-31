@@ -80,11 +80,11 @@
                     <img width="60" class="rounded-circle me-3" :src="`./assets/${contact.avatar.slice(2, contact.avatar.length - 4)}.jpg`" :alt="`${contact.name} image`">
                     <div>
                       <h6 class="m-0">{{contact.name}}</h6>
-                      <span class="icon_color_dark">{{contact.messages[contact.messages.length - 1].message}}</span>
+                      <span v-if="contact.messages.length > 0" class="icon_color_dark">{{contact.messages[contact.messages.length - 1].message}}</span>
                     </div>
                   </div>
                   <div class="right_contact_section d-flex align-items-start">
-                  <span class="last_message_time icon_color_dark">{{contact.messages[contact.messages.length - 1].date.slice(11, 16)}}</span>
+                    <span v-if="contact.messages.length > 0" class="last_message_time icon_color_dark">{{contact.messages[contact.messages.length - 1].date.slice(11, 16)}}</span>
                   </div>
                 </li>
                 <!-- /.contact -->
@@ -126,7 +126,7 @@
                     <span class="text">{{message.message}}</span>
                     <div class="right_message_section d-flex flex-column justify-content-between align-self-stretch">
                       <span class="text-end">
-                        <i class="fa-solid fa-angle-down fa-lg icon_color text-end"></i>
+                        <i @click="removeMessage(message)" class="fa-solid fa-angle-down fa-lg icon_color text-end"></i>
                       </span>
                       <span class="icon_color text-end align-self-end">{{message.date.slice(11, 16)}}</span>
                     </div>
