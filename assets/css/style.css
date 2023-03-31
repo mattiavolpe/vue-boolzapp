@@ -72,7 +72,7 @@ body {
 }
 
 #activate_notification {
-  height: 90px;
+  height: 80px;
   background-color: var(--bzap_notification);
 }
 
@@ -115,9 +115,28 @@ body {
   border-left: 0;
 }
 
+#contacts_list {
+  /* Heights to consider: header_left, activate_notification and search_contact */
+  height: calc(100% - 200px);
+  overflow-y: auto;
+}
+
+#contacts_list > li {
+  height: 80px;
+}
+
+#contacts_list > li.active {
+  background-color: var(--bzap_headers_overlays);
+}
+
+#contacts_list > li > * {
+  height: 60px;
+}
+
 #right_main_content {
   height: calc(100% - 140px);
   background-image: url("./../img/mine.jpg");
+  overflow-y: auto;
 }
 
 .bottom_app {
