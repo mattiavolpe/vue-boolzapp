@@ -181,4 +181,18 @@ createApp({
       ]
     }
   },
+  methods: {
+    generateRandomAccess() {
+      let hour = Math.floor(Math.random()*24);
+      if (hour < 10) {
+        hour = `0${hour.toString()}`;
+      }
+      let minutes = Math.floor(Math.random()*60);
+      if (minutes < 10) {
+        minutes = `0${minutes.toString()}`;
+      }
+      const timeString = `${hour}:${minutes}`;
+      return timeString;
+    }
+  }
 }).mount('#app')

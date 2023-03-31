@@ -99,10 +99,10 @@
 
               <div id="header_right" class="top_app d-flex justify-content-between align-items-center px-3">
                 <div class="d-flex align-items-center">
-                  <img width="50" class="rounded-circle me-3" src="./assets/img/avatar_1.jpg" alt="">
+                  <img width="50" class="rounded-circle me-3" :src="`./assets/${contacts[activeContact].avatar.slice(2, contacts[activeContact].avatar.length - 4)}.jpg`" :alt="`${contacts[activeContact].name} image`">
                   <div>
-                    <h5 class="m-0">Chat</h5>
-                    <span class="m-0 icon_color">Ultimo accesso oggi alle 12:00</span>
+                    <h5 class="m-0">{{contacts[activeContact].name}}</h5>
+                    <span class="m-0 icon_color">Ultimo accesso oggi alle {{generateRandomAccess()}}</span>
                   </div>
                 </div>
                 <ul class="d-flex align-items-center list-unstyled m-0 icon_color">
