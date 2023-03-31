@@ -8,6 +8,10 @@ Visualizzazione dinamica della lista contatti: tramite la direttiva v-for, visua
 Milestone 2
 Visualizzazione dinamica dei messaggi: tramite la direttiva v-for, visualizzare tutti i messaggi relativi al contatto attivo all’interno del pannello della conversazione
 Click sul contatto mostra la conversazione del contatto cliccato
+
+Milestone 3
+Aggiunta di un messaggio: l'utente scrive un testo nella parte bassa e digitando "enter" il testo viene aggiunto al thread sopra, come messaggio verde
+Risposta dall'interlocutore: ad ogni inserimento di un messaggio, l'utente riceverà un "ok" come risposta, che apparirà dopo 1 secondo.
 */
 
 const { createApp } = Vue
@@ -16,6 +20,7 @@ createApp({
   data() {
     return {
       activeContact: 0,
+      newMessage: null,
       contacts: [
         {
           name: 'Michele',
@@ -193,6 +198,45 @@ createApp({
       }
       const timeString = `${hour}:${minutes}`;
       return timeString;
+    },
+    sendNewMessage() {
+      const newMessage = {
+        date: this.actualTime(),
+        message: this.newMessage,
+        status: 'sent'
+      }
+      this.contacts[this.activeContact].messages.push(newMessage);
+      this.newMessage = null;
+      this.sendAnswer();
+    },
+    actualTime() {
+      const now = new Date();
+      const date = now.toLocaleDateString('it-IT', {
+        day: '2-digit', month: '2-digit', year: 'numeric',
+      });
+      let hours = now.getHours();
+      if (hours < 10) {
+        hours = `0${hours.toString()}`;
+      }
+      let minutes = now.getMinutes();
+      if (minutes < 10) {
+        minutes = `0${minutes.toString()}`;
+      }
+      let seconds = now.getSeconds();
+      if (seconds < 10) {
+        seconds = `0${seconds.toString()}`;
+      }
+      return `${date} ${hours}:${minutes}:${seconds}`;
+    },
+    sendAnswer() {
+      setTimeout(() => {
+        const newAnswer = {
+          date: this.actualTime(),
+          message: 'Ok',
+          status: 'received'
+        }
+        this.contacts[this.activeContact].messages.push(newAnswer);
+      }, 1000);
     }
   }
 }).mount('#app')

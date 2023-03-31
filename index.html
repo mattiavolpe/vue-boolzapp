@@ -134,7 +134,7 @@
 
               <div id="bottom_right" class="bottom_app d-flex justify-content-around align-items-center px-3">
                 <i class="fa-regular fa-face-smile icon_color_dark fa-lg"></i>
-                <input type="text" class="form-control border-0 text_dark" name="newMessage" id="newMessage" placeholder="Write a new message">
+                <input type="text" class="form-control border-0 text_dark" name="newMessage" id="newMessage" placeholder="Write a new message" v-model.trim="newMessage" @keydown.enter="sendNewMessage()">
                 <i class="fa-solid fa-microphone icon_color_dark fa-lg"></i>
               </div>
               <!-- /#bottom_right.bottom_app -->
