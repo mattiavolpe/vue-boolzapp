@@ -66,7 +66,7 @@
                   <label class="d-flex justify-content-center align-items-center bg-white px-4 icon_color" for="search_contact_input">
                     <i class="fa-solid fa-magnifying-glass fa-fw"></i>
                   </label>
-                  <input class="text_dark flex-grow-1" type="text" id="search_contact_input">
+                  <input class="text_dark flex-grow-1" type="text" id="search_contact_input" v-model="contactToSearch">
                 </div>
                 <!-- /.d-flex -->
 
@@ -75,16 +75,18 @@
 
               <ul id="contacts_list" class="m-0 bg-white p-0">
 
-                <li class="contact d-flex justify-content-between align-items-center px-3" :class="activeContact === index ? 'active' : ''" v-for="(contact, index) in contacts" @click="activeContact = index">
-                  <div class="left_contact_section d-flex align-items-start">
-                    <img width="60" class="rounded-circle me-3" :src="`./assets/${contact.avatar.slice(2, contact.avatar.length - 4)}.jpg`" :alt="`${contact.name} image`">
-                    <div>
-                      <h6 class="m-0">{{contact.name}}</h6>
-                      <span class="icon_color_dark">{{contact.messages[contact.messages.length - 1].message}}</span>
+                <li v-for="(contact, index) in contacts" @click="activeContact = index" v-show="contactToSearch.trim() === '' || searchContacts(contact)">
+                  <div class="contact d-flex justify-content-between align-items-center px-3" :class="activeContact === index ? 'active' : ''" >
+                    <div class="left_contact_section d-flex align-items-start">
+                      <img width="60" class="rounded-circle me-3" :src="`./assets/${contact.avatar.slice(2, contact.avatar.length - 4)}.jpg`" :alt="`${contact.name} image`">
+                      <div>
+                        <h6 class="m-0">{{contact.name}}</h6>
+                        <span class="icon_color_dark">{{contact.messages[contact.messages.length - 1].message}}</span>
+                      </div>
                     </div>
-                  </div>
-                  <div class="right_contact_section d-flex align-items-start">
+                    <div class="right_contact_section d-flex align-items-start">
                     <span class="last_message_time icon_color_dark">{{contact.messages[contact.messages.length - 1].date.slice(11, 16)}}</span>
+                    </div>
                   </div>
                 </li>
                 <!-- /.contact -->
@@ -102,7 +104,7 @@
                   <img width="50" class="rounded-circle me-3" :src="`./assets/${contacts[activeContact].avatar.slice(2, contacts[activeContact].avatar.length - 4)}.jpg`" :alt="`${contacts[activeContact].name} image`">
                   <div>
                     <h5 class="m-0">{{contacts[activeContact].name}}</h5>
-                    <span class="m-0 icon_color">Ultimo accesso oggi alle {{generateRandomAccess()}}</span>
+                    <span class="m-0 icon_color">Last seen today at {{generateRandomAccess()}}</span>
                   </div>
                 </div>
                 <ul class="d-flex align-items-center list-unstyled m-0 icon_color">
