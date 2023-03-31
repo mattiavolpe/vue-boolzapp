@@ -121,15 +121,15 @@ body {
   overflow-y: auto;
 }
 
-#contacts_list > li > div {
+#contacts_list > li {
   height: 85px;
 }
 
-#contacts_list > li >  div > * {
+#contacts_list > li > * {
   height: 60px;
 }
 
-#contacts_list > li >  div.active {
+#contacts_list > li.active {
   background-color: var(--bzap_headers_overlays);
 }
 
