@@ -169,6 +169,10 @@ body {
   background-color: var(--bzap_white);
 }
 
+.message .time {
+  font-size: 10px;
+}
+
 .bottom_app {
   height: 70px;
   background-color: var(--bzap_bg_message_section);

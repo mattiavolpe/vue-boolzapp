@@ -121,60 +121,13 @@
 
               <main id="right_main_content" class="px-5 py-3 d-flex flex-column-reverse flex-shrink-0">
 
-                <div class="message">
-                  <div class="received_message">messaggio nuovo ricevuto asfdasfdsafas asfas safdasfas sadfadsfa asdfasd fa</div>
+                <div class="message" v-for="message in contacts[activeContact].messages.slice().reverse()">
+                  <div class="d-flex justify-content-between" :class="message.status === 'sent' ? 'sent_message' : 'received_message'">
+                    <span class="text">{{message.message}}</span>
+                    <span class="time icon_color align-self-end">{{message.date.slice(11, 16)}}</span>
+                  </div>
                 </div>
-                <div class="message">
-                  <div class="sent_message">messaggio intermedio inviato asfdasfdsafas asfas safdasfas sadfadsfa asdfasd fa</div>
-                </div>
-                <div class="message">
-                  <div class="sent_message">messaggio vecchio inviato asfdasfdsafas asfas safdasfas sadfadsfa asdfasd fa</div>
-                </div>
-                <div class="message">
-                  <div class="received_message">messaggio nuovo ricevuto asfdasfdsafas asfas safdasfas sadfadsfa asdfasd fa</div>
-                </div>
-                <div class="message">
-                  <div class="sent_message">messaggio intermedio inviato asfdasfdsafas asfas safdasfas sadfadsfa asdfasd fa</div>
-                </div>
-                <div class="message">
-                  <div class="sent_message">messaggio vecchio inviato asfdasfdsafas asfas safdasfas sadfadsfa asdfasd fa</div>
-                </div>
-                <div class="message">
-                  <div class="received_message">messaggio nuovo ricevuto asfdasfdsafas asfas safdasfas sadfadsfa asdfasd fa</div>
-                </div>
-                <div class="message">
-                  <div class="sent_message">messaggio intermedio inviato asfdasfdsafas asfas safdasfas sadfadsfa asdfasd fa</div>
-                </div>
-                <div class="message">
-                  <div class="sent_message">messaggio vecchio inviato asfdasfdsafas asfas safdasfas sadfadsfa asdfasd fa</div>
-                </div>
-                <div class="message">
-                  <div class="received_message">messaggio nuovo ricevuto asfdasfdsafas asfas safdasfas sadfadsfa asdfasd fa</div>
-                </div>
-                <div class="message">
-                  <div class="sent_message">messaggio intermedio inviato asfdasfdsafas asfas safdasfas sadfadsfa asdfasd fa</div>
-                </div>
-                <div class="message">
-                  <div class="sent_message">messaggio vecchio inviato asfdasfdsafas asfas safdasfas sadfadsfa asdfasd fa</div>
-                </div>
-                <div class="message">
-                  <div class="received_message">messaggio nuovo ricevuto asfdasfdsafas asfas safdasfas sadfadsfa asdfasd fa</div>
-                </div>
-                <div class="message">
-                  <div class="sent_message">messaggio intermedio inviato asfdasfdsafas asfas safdasfas sadfadsfa asdfasd fa</div>
-                </div>
-                <div class="message">
-                  <div class="sent_message">messaggio vecchio inviato asfdasfdsafas asfas safdasfas sadfadsfa asdfasd fa</div>
-                </div>
-                <div class="message">
-                  <div class="received_message">messaggio nuovo ricevuto asfdasfdsafas asfas safdasfas sadfadsfa asdfasd fa</div>
-                </div>
-                <div class="message">
-                  <div class="sent_message">messaggio intermedio inviato asfdasfdsafas asfas safdasfas sadfadsfa asdfasd fa</div>
-                </div>
-                <div class="message">
-                  <div class="sent_message">messaggio vecchio inviato asfdasfdsafas asfas safdasfas sadfadsfa asdfasd fa</div>
-                </div>
+                <!-- /.message -->
                 
               </main>
               <!-- /#right_main_content -->
