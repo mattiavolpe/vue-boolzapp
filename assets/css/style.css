@@ -72,7 +72,7 @@ body {
 }
 
 #activate_notification {
-  height: 80px;
+  height: 85px;
   background-color: var(--bzap_notification);
 }
 
@@ -122,15 +122,19 @@ body {
 }
 
 #contacts_list > li {
-  height: 80px;
+  height: 85px;
+}
+
+#contacts_list > li > * {
+  height: 60px;
 }
 
 #contacts_list > li.active {
   background-color: var(--bzap_headers_overlays);
 }
 
-#contacts_list > li > * {
-  height: 60px;
+#contacts_list span {
+  font-size: 0.875rem;
 }
 
 #right_main_content {
