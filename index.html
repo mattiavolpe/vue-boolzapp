@@ -124,7 +124,12 @@
                 <div class="message" v-for="message in contacts[activeContact].messages.slice().reverse()">
                   <div class="d-flex justify-content-between" :class="message.status === 'sent' ? 'sent_message' : 'received_message'">
                     <span class="text">{{message.message}}</span>
-                    <span class="time icon_color align-self-end">{{message.date.slice(11, 16)}}</span>
+                    <div class="right_message_section d-flex flex-column justify-content-between align-self-stretch">
+                      <span class="text-end">
+                        <i class="fa-solid fa-angle-down fa-lg icon_color text-end"></i>
+                      </span>
+                      <span class="icon_color text-end align-self-end">{{message.date.slice(11, 16)}}</span>
+                    </div>
                   </div>
                 </div>
                 <!-- /.message -->

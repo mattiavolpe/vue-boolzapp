@@ -169,7 +169,7 @@ body {
   background-color: var(--bzap_white);
 }
 
-.message .time {
+.message .right_message_section {
   font-size: 10px;
 }
 
