@@ -196,16 +196,8 @@ createApp({
     }
   },
   methods: {
-    generateRandomAccess() {
-      let hour = Math.floor(Math.random()*24);
-      if (hour < 10) {
-        hour = `0${hour.toString()}`;
-      }
-      let minutes = Math.floor(Math.random()*60);
-      if (minutes < 10) {
-        minutes = `0${minutes.toString()}`;
-      }
-      const timeString = `${hour}:${minutes}`;
+    provideLastMessageTime() {
+      const timeString = this.contacts[this.activeContact].messages[this.contacts[this.activeContact].messages.length - 1].date.slice(11, 16)
       return timeString;
     },
     sendNewMessage() {
@@ -248,6 +240,7 @@ createApp({
           message: 'Ok',
           status: 'received'
         }
+        this.scrollToBottom();
         this.contacts[this.activeContact].messages.push(newAnswer);
       }, 1000);
     },
