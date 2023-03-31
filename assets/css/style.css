@@ -18,9 +18,6 @@ body {
   height: 100vh;
   height: 100svh;
   background: linear-gradient(180deg, var(--bzap_bg_primary) 0%, var(--bzap_bg_primary) 15%, var(--bzap_bg_neutral) 15%, var(--bzap_bg_neutral) 100%);
-}
-
-.text_dark {
   color: var(--bzap_dark);
 }
 
@@ -29,18 +26,27 @@ body {
   height: 100%;
 }
 
-.container {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  height: 94%;
-  min-width: 510px;
-}
-
 /* #endregion Common */
 
 /* #region Utility */
+
+.text_dark {
+  color: var(--bzap_dark);
+}
+
+.icon_color {
+  color: var(--bzap_icon);
+}
+
+.icon_color_dark {
+  color: var(--bzap_icon_dark);
+}
+
+.container {
+  height: 100%;
+  padding: 3vh 0;
+  padding: 3svh 0;
+}
 
 .content_wrapper {
   height: 100%;
@@ -48,13 +54,14 @@ body {
 
 #left_section {
   width: 30%;
-  min-width: 200px;
+  min-width: 290px;
   height: 100%;
   background-color: red;
 }
 
 #right_section {
   flex-grow: 1;
+  min-width: 290px;
   height: 100%;
   border-left: 1px solid var(--bzap_icon);
 }
@@ -64,9 +71,48 @@ body {
   background-color: var(--bzap_headers_overlays);
 }
 
-.bottom_app {
-  height: 70px;
+#activate_notification {
+  height: 90px;
+  background-color: var(--bzap_notification);
+}
+
+.notification_icon_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  width: 50px;
+  aspect-ratio: 1 / 1;
+  background-color: var(--bzap_white);
+}
+
+.fa-bell-slash {
+  color: var(--bzap_notification);
+}
+
+#search_contact {
+  height: 50px;
   background-color: var(--bzap_bg_message_section);
+}
+
+#search_contact > div {
+  width: 100%;
+  height: 30px;
+}
+
+#search_contact label {
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+  border: 1px solid var(--bzap_icon);
+  border-right: 0;
+}
+
+#search_contact input {
+  min-width: 0;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+  border: 1px solid var(--bzap_icon);
+  border-left: 0;
 }
 
 #right_main_content {
@@ -74,16 +120,13 @@ body {
   background-image: url("./../img/mine.jpg");
 }
 
+.bottom_app {
+  height: 70px;
+  background-color: var(--bzap_bg_message_section);
+}
+
 #bottom_right input {
   width: 80%;
-}
-
-.icon_color {
-  color: var(--bzap_icon);
-}
-
-.icon_color_dark {
-  color: var(--bzap_icon_dark);
 }
 
 /* #endregion Utility */
