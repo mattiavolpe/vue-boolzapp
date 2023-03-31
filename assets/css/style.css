@@ -9,6 +9,7 @@
   --bzap_sent: #d5f9ba;
   --bzap_bg_message_section: #f3eeea;
   --bzap_icon: #b1b1b1;
+  --bzap_icon_dark: #6b7376;
   --bzap_white: #ffffff;
   --bzap_dark: #1e1e1e;
 }
@@ -17,6 +18,10 @@ body {
   height: 100vh;
   height: 100svh;
   background: linear-gradient(180deg, var(--bzap_bg_primary) 0%, var(--bzap_bg_primary) 15%, var(--bzap_bg_neutral) 15%, var(--bzap_bg_neutral) 100%);
+}
+
+.text_dark {
+  color: var(--bzap_dark);
 }
 
 #app {
@@ -58,12 +63,26 @@ body {
   background-color: var(--bzap_headers_overlays);
 }
 
-#header_right {
-  border: 1px solid var(--bzap_icon);
+.bottom_app {
+  height: 70px;
+  background-color: var(--bzap_bg_message_section);
+}
+
+#header_right,
+#bottom_right {
+  border-left: 1px solid var(--bzap_icon);
+}
+
+#bottom_right input {
+  width: 80%;
 }
 
 .icon_color {
   color: var(--bzap_icon);
+}
+
+.icon_color_dark {
+  color: var(--bzap_icon_dark);
 }
 
 /* #endregion Utility */
