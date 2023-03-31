@@ -24,7 +24,7 @@
       
       <div class="container d-flex">
 
-            <div class="left_section">
+            <div id="left_section">
               <div id="header_left" class="top_app d-flex justify-content-between align-items-center px-3">
                 <div class="d-flex align-items-center">
                   <img width="50" class="rounded-circle me-3" src="./assets/img/avatar_1.jpg" alt="">
@@ -48,7 +48,8 @@
             </div>
             <!-- /.left_section -->
 
-            <div class="right_section">
+            <div id="right_section">
+              
               <div id="header_right" class="top_app d-flex justify-content-between align-items-center px-3">
                 <div class="d-flex align-items-center">
                   <img width="50" class="rounded-circle me-3" src="./assets/img/avatar_1.jpg" alt="">
@@ -70,12 +71,24 @@
                 </ul>
               </div>
               <!-- /#header_right.top_app -->
+
+              <div id="right_main_content">
+                <div class="container-fluid h-100">
+                  <div class="row row-cols-2 h-100">
+                    <div class="col bg-dark"></div>
+                    <div class="col bg-danger"></div>
+                  </div>
+                </div>
+              </div>
+              <!-- /#right_main_content -->
+
               <div id="bottom_right" class="bottom_app d-flex justify-content-around align-items-center px-3">
                 <i class="fa-regular fa-face-smile icon_color_dark fa-lg"></i>
                 <input type="text" class="form-control border-0 text_dark" name="newMessage" id="newMessage" placeholder="Write a new message">
                 <i class="fa-solid fa-microphone icon_color_dark fa-lg"></i>
               </div>
               <!-- /#bottom_right.bottom_app -->
+
             </div>
             <!-- /.right_section -->
 
