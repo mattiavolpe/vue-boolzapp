@@ -21,8 +21,6 @@ Cancella messaggio: cliccando sul messaggio appare un menu a tendina che permett
 Visualizzazione ora e ultimo messaggio inviato/ricevuto nella lista dei contatti
 */
 
-[].s
-
 const { createApp } = Vue
   
 createApp({
@@ -210,12 +208,15 @@ createApp({
       return timeString;
     },
     sendNewMessage() {
-      const newMessage = {
+      if (this.newMessage === null || this.newMessage.length === 0) {
+        return;
+      }
+      const newMessageObject = {
         date: this.actualTime(),
         message: this.newMessage,
         status: 'sent'
       }
-      this.contacts[this.activeContact].messages.push(newMessage);
+      this.contacts[this.activeContact].messages.push(newMessageObject);
       this.newMessage = null;
       this.sendAnswer();
     },
