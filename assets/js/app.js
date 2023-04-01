@@ -26,6 +26,7 @@ const { createApp } = Vue
 createApp({
   data() {
     return {
+      myArray: [],
       activeContact: 0,
       newMessage: null,
       contactToSearch: "",
@@ -192,13 +193,66 @@ createApp({
             }
           ],
         }
-      ]
+      ],
+      orderedContacts: [],
     }
   },
   methods: {
-    provideLastMessageTime() {
-      const timeString = this.contacts[this.activeContact].messages[this.contacts[this.activeContact].messages.length - 1].date.slice(11, 16)
+    orderContacts() {
+      this.orderedContacts = [...this.contacts].sort((dateA, dateB) => {
+        let splittedA;
+        let splittedB;
+        if (dateA.messages.length === 0) {
+          splittedA = ["00/00/0000", "00:00:00"];
+          if (dateB.messages.length === 0) {
+            splittedB = ["00/00/0000", "00:00:00"];
+          } else {
+            splittedB = dateB.messages[dateB.messages.length - 1].date.split(" ");
+          }
+        } else if (dateB.messages.length === 0) {
+          splittedA = dateA.messages[dateA.messages.length - 1].date.split(" ");
+          splittedB = ["00/00/0000", "00:00:00"];
+        } else {
+          splittedA = dateA.messages[dateA.messages.length - 1].date.split(" ");
+          splittedB = dateB.messages[dateB.messages.length - 1].date.split(" ");
+        }
+        const yearA = splittedA[0].split("/")[2];
+        const monthA = splittedA[0].split("/")[1];
+        const dayA = splittedA[0].split("/")[0];
+        const hoursA = splittedA[1].split(":")[0];
+        const minutesA = splittedA[1].split(":")[1];
+        const secondsA = splittedA[1].split(":")[2];
+        const completeStringA = `${yearA+monthA+dayA+hoursA+minutesA+secondsA}`;
+        const yearB = splittedB[0].split("/")[2];
+        const monthB = splittedB[0].split("/")[1];
+        const dayB = splittedB[0].split("/")[0];
+        const hoursB = splittedB[1].split(":")[0];
+        const minutesB = splittedB[1].split(":")[1];
+        const secondsB = splittedB[1].split(":")[2];
+        const completeStringB = `${yearB+monthB+dayB+hoursB+minutesB+secondsB}`;
+        return completeStringB - completeStringA;
+      });
+      return this.orderedContacts;
+    },
+    provideLastMessageDate() {
+      const actualContact = this.orderedContacts[this.activeContact];
+      const timeString = actualContact.messages[actualContact.messages.length - 1].date.slice(0, 10);
       return timeString;
+    },
+    provideLastMessageTime() {
+      const actualContact = this.orderedContacts[this.activeContact];
+      if (actualContact.messages.length === 0) {
+        const timeString = `${new Date().getHours()}:${new Date().getMinutes()}`;
+        return timeString;
+      }
+      const timeString = actualContact.messages[actualContact.messages.length - 1].date.slice(11, 16);
+      return timeString;
+    },
+    getActualTime() {
+      let actualTime = new Date();
+      actualTime = actualTime.toLocaleTimeString();
+      actualTime = actualTime.slice(0, 5)
+      return actualTime;
     },
     sendNewMessage() {
       if (this.newMessage === null || this.newMessage.length === 0) {
@@ -209,7 +263,10 @@ createApp({
         message: this.newMessage,
         status: 'sent'
       }
-      this.contacts[this.activeContact].messages.push(newMessageObject);
+      this.orderedContacts[this.activeContact].visible = true;
+      this.orderedContacts[this.activeContact].messages.push(newMessageObject);
+      this.activeContact = 0;
+      this.orderContacts();
       this.scrollToBottom();
       this.newMessage = null;
       this.sendAnswer();
@@ -240,26 +297,46 @@ createApp({
           message: 'Ok',
           status: 'received'
         }
+        this.orderContacts();
         this.scrollToBottom();
-        this.contacts[this.activeContact].messages.push(newAnswer);
+        this.orderedContacts[this.activeContact].messages.push(newAnswer);
       }, 1000);
     },
     searchContacts(contact) {
-      if (contact.name.toLowerCase().includes(this.contactToSearch.toLowerCase().trim())) {
+      if (contact.name.toLowerCase().includes(this.contactToSearch.trim().toLowerCase())) {
         return true;
       }
       else {
         return false;
       }
     },
-    removeMessage(message, index) {
-      this.contacts[this.activeContact].messages.splice(this.contacts[this.activeContact].messages.indexOf(message), 1);
+    removeMessage(message) {
+      this.orderedContacts[this.activeContact].lastUser = true;
+      this.orderedContacts[this.activeContact].messages.splice(this.orderedContacts[this.activeContact].messages.indexOf(message), 1);
+      if (this.orderedContacts[this.activeContact].messages.length === 0) {
+        this.orderedContacts[this.activeContact].visible = false;
+        this.orderContacts();
+        this.activeContact = this.orderedContacts.findIndex(contact => contact.lastUser);
+        delete this.orderedContacts[this.activeContact].lastUser;
+        return;
+      }
+      this.orderContacts();
+      this.activeContact = this.orderedContacts.findIndex(contact => contact.lastUser);
       this.messageToRemove = -1
     },
     // FUNCTION USED TO SCROLL TO THE NEWEST MESSAGE WHEN A NEW MESSAGE IS SENT / RECEIVED
     scrollToBottom() {
       const mainContent = document.getElementById("right_main_content");
       mainContent.scrollTo(0, 0);
-    }
+    },
+    contactFound(contact) {
+      return this.contactToSearch.trim() != '' && this.searchContacts(contact);
+    },
+    hasMessages(contact) {
+      return contact.visible === true && this.contactToSearch.trim() === '';
+    },
+  },
+  created() {
+    this.orderContacts();
   }
 }).mount('#app')

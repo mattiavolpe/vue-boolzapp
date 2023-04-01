@@ -1,7 +1,7 @@
 /* #region Common */
 
 :root {
-  --bzap_font_family: Helvetica, sans-serif;
+  --bzap_font_family: 'Roboto', sans-serif;
   --bzap_bg_primary: #009688;
   --bzap_bg_neutral: #dadbd3;
   --bzap_headers_overlays: #eaeaea;
@@ -19,6 +19,7 @@ body {
   height: 100svh;
   background: linear-gradient(180deg, var(--bzap_bg_primary) 0%, var(--bzap_bg_primary) 15%, var(--bzap_bg_neutral) 15%, var(--bzap_bg_neutral) 100%);
   color: var(--bzap_dark);
+  font-family: var(--bzap_font_family);
 }
 
 #app {
@@ -79,6 +80,11 @@ body {
   background-color: var(--bzap_notification);
 }
 
+#activate_notification h6,
+#activate_notification span {
+  font-size: 0.875rem;
+}
+
 .notification_icon_container {
   display: flex;
   justify-content: center;
@@ -126,6 +132,7 @@ body {
 
 #contacts_list > li {
   height: 85px;
+  overflow: hidden;
 }
 
 #contacts_list > li > * {
@@ -137,7 +144,7 @@ body {
 }
 
 #contacts_list span {
-  font-size: 0.875rem;
+  font-size: 0.8rem;
 }
 
 #right_main_content {
@@ -174,19 +181,21 @@ body {
 
 .message > div {
   position: relative;
+  box-shadow: -2px 2px 5px 0 var(--bzap_icon_dark);
 }
 
 .message .right_message_section {
   font-size: 10px;
+  padding: 4px 4px 4px 0;
 }
 
 .delete_message_dropdown {
   position: absolute;
-  right: 10px;
-  top: 10px;
+  right: 14px;
+  top: 14px;
   width: 50%;
   text-align: center;
-  padding: 0.5rem 0;
+  padding: 0.75rem 0;
   border-radius: 3px;
   box-shadow: -2px 2px 5px 0 var(--bzap_icon_dark);
   background-color: var(--bzap_white);
