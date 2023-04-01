@@ -53,6 +53,10 @@ body {
   padding: 3svh 0;
 }
 
+/* #endregion Utility */
+
+/* #region App */
+
 #left_section {
   width: 30%;
   min-width: 290px;
@@ -66,10 +70,14 @@ body {
   border-left: 1px solid var(--bzap_icon);
 }
 
-.top_app {
+.top_section {
   height: 70px;
   background-color: var(--bzap_headers_overlays);
 }
+
+/* #endregion App */
+
+/* #region Left section */
 
 #activate_notification {
   height: 85px;
@@ -139,9 +147,26 @@ body {
   background-color: var(--bzap_headers_overlays);
 }
 
+#contacts_list .no_avatar,
+#right_section .no_avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  font-size: 1.125rem;
+  color: var(--bzap_white);
+  background-color: var(--bzap_bg_primary);
+}
+
 #contacts_list span {
   font-size: 0.8rem;
 }
+
+/* #endregion Left section */
+
+/* #region Right section */
 
 #right_main_content {
   height: calc(100% - 140px);
@@ -198,7 +223,7 @@ body {
   font-size: 0.875rem;
 }
 
-.bottom_app {
+#bottom_right {
   height: 70px;
   background-color: var(--bzap_bg_message_section);
 }
@@ -207,4 +232,4 @@ body {
   width: 80%;
 }
 
-/* #endregion Utility */
+/* #endregion Right section */

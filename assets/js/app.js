@@ -234,6 +234,14 @@ createApp({
       });
       return this.orderedContacts;
     },
+    findInitials(contact) {
+      const nameParts = contact.name.split(" ");
+      let initials = "";
+      nameParts.forEach(part => {
+        initials += part[0];
+      });
+      return initials;
+    },
     provideLastMessageDate() {
       const actualContact = this.orderedContacts[this.activeContact];
       let timeString = actualContact.messages[actualContact.messages.length - 1].date.slice(0, 10);

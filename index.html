@@ -34,9 +34,9 @@
 
               <div id="left_section">
                 
-                <div id="header_left" class="top_app d-flex justify-content-between align-items-center px-3">
+                <div id="header_left" class="top_section d-flex justify-content-between align-items-center px-3">
                   <div class="d-flex align-items-center">
-                    <img width="50" class="rounded-circle me-3" src="./assets/img/avatar_io.jpg" alt="User profile image">
+                    <img width="60" class="rounded-circle me-3" src="./assets/img/avatar_io.jpg" alt="User profile image">
                     <div>
                       <h5 class="m-0">Sofia</h5>
                     </div>
@@ -53,7 +53,7 @@
                     </li>
                   </ul>
                 </div>
-                <!-- /#header_left.top_app -->
+                <!-- /#header_left.top_section -->
 
                 <div id="activate_notification" class="d-flex align-items-center px-3">
 
@@ -88,7 +88,8 @@
 
                   <li v-for="(contact, index) in orderedContacts" class="contact justify-content-between align-items-center px-3" :class="contactFound(contact) || hasMessages(contact) ? 'd-flex' : '', activeContact === index ? 'active' : ''" v-show="contactFound(contact) || hasMessages(contact)" @click="activeContact = index, contactToSearch = ''">
                       <div class="left_contact_section d-flex align-items-start">
-                        <img width="60" class="rounded-circle me-3" :src="`./assets/${contact.avatar.slice(2, contact.avatar.length - 4)}.jpg`" :alt="`${contact.name} image`">
+                        <img v-if="contact.avatar != undefined && contact.avatar.trim() != ''" width="60" class="rounded-circle me-3" :src="`./assets/${contact.avatar.slice(2, contact.avatar.length - 4)}.jpg`" :alt="`${contact.name} image`">
+                        <div v-else class="no_avatar me-3">{{findInitials(contact)}}</div>
                         <div>
                           <h6 class="m-0">{{contact.name}}</h6>
                           <span v-if="contact.messages.length > 0" class="icon_color_dark">{{contact.messages[contact.messages.length - 1].message}}</span>
@@ -108,9 +109,10 @@
 
               <div id="right_section">
 
-                <div id="header_right" class="top_app d-flex justify-content-between align-items-center px-3">
+                <div id="header_right" class="top_section d-flex justify-content-between align-items-center px-3">
                   <div class="d-flex align-items-center">
-                    <img width="50" class="rounded-circle me-3" :src="`./assets/${orderedContacts[activeContact].avatar.slice(2, orderedContacts[activeContact].avatar.length - 4)}.jpg`" :alt="`${orderedContacts[activeContact].name} image`">
+                    <img v-if="orderedContacts[activeContact].avatar != undefined && orderedContacts[activeContact].avatar.trim() != ''" width="60" class="rounded-circle me-3" :src="`./assets/${orderedContacts[activeContact].avatar.slice(2, orderedContacts[activeContact].avatar.length - 4)}.jpg`" :alt="`${orderedContacts[activeContact].name} image`">
+                    <div v-else class="no_avatar me-3">{{findInitials(orderedContacts[activeContact])}}</div>
                     <div>
                       <h5 class="m-0">{{orderedContacts[activeContact].name}}</h5>
                       <span v-if="orderedContacts[activeContact].messages.length > 0" class="m-0 icon_color">Last seen {{provideLastMessageDate()}} at {{provideLastMessageTime()}}</span>
@@ -129,7 +131,7 @@
                     </li>
                   </ul>
                 </div>
-                <!-- /#header_right.top_app -->
+                <!-- /#header_right.top_section -->
 
                 <main id="right_main_content" class="px-5 py-3 d-flex flex-column-reverse flex-shrink-0">
 
@@ -152,12 +154,12 @@
                 </main>
                 <!-- /#right_main_content -->
 
-                <div id="bottom_right" class="bottom_app d-flex justify-content-around align-items-center px-3">
+                <div id="bottom_right" class="d-flex justify-content-around align-items-center px-3">
                   <i class="fa-regular fa-face-smile icon_color_dark fa-lg"></i>
                   <input type="text" class="form-control border-0 text_dark" name="newMessage" id="newMessage" placeholder="Write a new message" v-model.trim="newMessage" @keydown.enter="sendNewMessage()">
                   <i class="fa-solid fa-microphone icon_color_dark fa-lg"></i>
                 </div>
-                <!-- /#bottom_right.bottom_app -->
+                <!-- /#bottom_right -->
 
               </div>
               <!-- /#right_section -->
