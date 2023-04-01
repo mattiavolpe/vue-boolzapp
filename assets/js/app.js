@@ -21,12 +21,11 @@ Cancella messaggio: cliccando sul messaggio appare un menu a tendina che permett
 Visualizzazione ora e ultimo messaggio inviato/ricevuto nella lista dei contatti
 */
 
-const { createApp } = Vue
+const { createApp } = Vue;
   
 createApp({
   data() {
     return {
-      myArray: [],
       activeContact: 0,
       newMessage: null,
       contactToSearch: "",
@@ -198,6 +197,10 @@ createApp({
     }
   },
   methods: {
+    /**
+     * Takes the original array and sort it in chronological order
+     * @returns An array of objects containing the chronologically ordered chats
+     */
     orderContacts() {
       this.orderedContacts = [...this.contacts].sort((dateA, dateB) => {
         let splittedDateA;
@@ -234,6 +237,11 @@ createApp({
       });
       return this.orderedContacts;
     },
+    /**
+     * Takes the currently iterated contact and returns it's initials if it has no avatar
+     * @param {object} contact The currently iterated contact
+     * @returns A string containing the initials of the contact
+     */
     findInitials(contact) {
       const nameParts = contact.name.split(" ");
       let initials = "";
@@ -242,6 +250,10 @@ createApp({
       });
       return initials;
     },
+    /**
+     * Takes the latest message in the chat between the user and the active contact, and returns it's date
+     * @returns A string containing the date of the latest message in the chat between the user and the active contact
+     */
     provideLastMessageDate() {
       const actualContact = this.orderedContacts[this.activeContact];
       let timeString = actualContact.messages[actualContact.messages.length - 1].date.slice(0, 10);
@@ -253,6 +265,10 @@ createApp({
       }
       return timeString;
     },
+    /**
+     * Takes the latest message in the chat between the user and the active contact, and returns it's time
+     * @returns A string containing the time of the latest message in the chat between the user and the active contact
+     */
     provideLastMessageTime() {
       const actualContact = this.orderedContacts[this.activeContact];
       if (actualContact.messages.length === 0) {
@@ -262,29 +278,20 @@ createApp({
       const timeString = actualContact.messages[actualContact.messages.length - 1].date.slice(11, 16);
       return timeString;
     },
-    getActualTime() {
+    /**
+     * Returns a string containing the current time and uses it as the latest seen time for the active contact in case there are no left messages in the chat
+     * @returns A string containing the current time
+     */
+    getCurrentTime() {
       let actualTime = new Date();
       actualTime = actualTime.toLocaleTimeString();
       actualTime = actualTime.slice(0, 5)
       return actualTime;
     },
-    sendNewMessage() {
-      if (this.newMessage === null || this.newMessage.length === 0) {
-        return;
-      }
-      const newMessageObject = {
-        date: this.actualTime(),
-        message: this.newMessage,
-        status: 'sent'
-      }
-      this.orderedContacts[this.activeContact].visible = true;
-      this.orderedContacts[this.activeContact].messages.push(newMessageObject);
-      this.activeContact = 0;
-      this.orderContacts();
-      this.scrollToBottom();
-      this.newMessage = null;
-      this.sendAnswer();
-    },
+    /**
+     * Returns a string containing the current date and time and uses it as the date property of the new message
+     * @returns A string containing the current date and time
+     */
     actualTime() {
       const now = new Date();
       const date = now.toLocaleDateString('it-IT', {
@@ -304,6 +311,29 @@ createApp({
       }
       return `${date} ${hours}:${minutes}:${seconds}`;
     },
+    /**
+     * Takes the message written by the user and sends it as the newest message in the chat between the user and the contact
+     */
+    sendNewMessage() {
+      if (this.newMessage === null || this.newMessage.length === 0) {
+        return;
+      }
+      const newMessageObject = {
+        date: this.actualTime(),
+        message: this.newMessage,
+        status: 'sent'
+      }
+      this.orderedContacts[this.activeContact].visible = true;
+      this.orderedContacts[this.activeContact].messages.push(newMessageObject);
+      this.activeContact = 0;
+      this.orderContacts();
+      this.scrollToBottom();
+      this.newMessage = null;
+      this.sendAnswer();
+    },
+    /**
+     * Sends an answer 1 second after the user's new message
+     */
     sendAnswer() {
       setTimeout(() => {
         const newAnswer = {
@@ -316,7 +346,15 @@ createApp({
         this.orderedContacts[this.activeContact].messages.push(newAnswer);
       }, 1000);
     },
+    /**
+     * Returns a boolean value for every iterated contact whos name contains the text inserted by the user in the "search" field to filter contacts by name
+     * @param {object} contact The currently iterated contact
+     * @returns A boolean value if the contact's name contains the text inserted by the user in the "search" field
+     */
     searchContacts(contact) {
+      if (this.contactToSearch.trim() == '') {
+        return false;
+      }
       if (contact.name.toLowerCase().includes(this.contactToSearch.trim().toLowerCase())) {
         return true;
       }
@@ -324,6 +362,10 @@ createApp({
         return false;
       }
     },
+    /**
+     * Deletes the message the user wants to delete from the active contact messages array
+     * @param {object} message The message the user wants to delete
+     */
     removeMessage(message) {
       this.orderedContacts[this.activeContact].lastUser = true;
       this.orderedContacts[this.activeContact].messages.splice(this.orderedContacts[this.activeContact].messages.indexOf(message), 1);
@@ -338,14 +380,18 @@ createApp({
       this.activeContact = this.orderedContacts.findIndex(contact => contact.lastUser);
       this.messageToRemove = -1
     },
-    // FUNCTION USED TO SCROLL TO THE NEWEST MESSAGE WHEN A NEW MESSAGE IS SENT / RECEIVED
+    /**
+     * Scrolls to the newest message when a new message is sent / received
+     */
     scrollToBottom() {
       const mainContent = document.getElementById("right_main_content");
       mainContent.scrollTo(0, 0);
     },
-    contactFound(contact) {
-      return this.contactToSearch.trim() != '' && this.searchContacts(contact);
-    },
+    /**
+     * Returns a boolean value to check if the iterated contact still has messages in the chat with the user
+     * @param {object} contact The currently iterated contact
+     * @returns A boolean value to che if the iterated contact still has messages in the chat
+     */
     hasMessages(contact) {
       return contact.visible === true && this.contactToSearch.trim() === '';
     },
@@ -353,4 +399,4 @@ createApp({
   created() {
     this.orderContacts();
   }
-}).mount('#app')
+}).mount('#app');

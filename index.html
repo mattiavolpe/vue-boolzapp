@@ -86,7 +86,7 @@
 
                 <ul id="contacts_list" class="m-0 bg-white p-0 list-unstyled">
 
-                  <li v-for="(contact, index) in orderedContacts" class="contact justify-content-between align-items-center px-3" :class="contactFound(contact) || hasMessages(contact) ? 'd-flex' : '', activeContact === index ? 'active' : ''" v-show="contactFound(contact) || hasMessages(contact)" @click="activeContact = index, contactToSearch = ''">
+                  <li v-for="(contact, index) in orderedContacts" class="contact justify-content-between align-items-center px-3" :class="searchContacts(contact) || hasMessages(contact) ? 'd-flex' : '', activeContact === index ? 'active' : ''" v-show="searchContacts(contact) || hasMessages(contact)" @click="activeContact = index, contactToSearch = ''">
                       <div class="left_contact_section d-flex align-items-start">
                         <img v-if="contact.avatar != undefined && contact.avatar.trim() != ''" width="60" class="rounded-circle me-3" :src="`./assets/${contact.avatar.slice(2, contact.avatar.length - 4)}.jpg`" :alt="`${contact.name} image`">
                         <div v-else class="no_avatar me-3">{{findInitials(contact)}}</div>
@@ -116,7 +116,7 @@
                     <div>
                       <h5 class="m-0">{{orderedContacts[activeContact].name}}</h5>
                       <span v-if="orderedContacts[activeContact].messages.length > 0" class="m-0 icon_color">Last seen {{provideLastMessageDate()}} at {{provideLastMessageTime()}}</span>
-                      <span v-else class="m-0 icon_color">Last seen today at {{getActualTime()}}</span>
+                      <span v-else class="m-0 icon_color">Last seen today at {{getCurrentTime()}}</span>
                     </div>
                   </div>
                   <ul class="d-flex align-items-center list-unstyled m-0 icon_color">
