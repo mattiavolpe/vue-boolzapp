@@ -200,35 +200,35 @@ createApp({
   methods: {
     orderContacts() {
       this.orderedContacts = [...this.contacts].sort((dateA, dateB) => {
-        let splittedA;
-        let splittedB;
+        let splittedDateA;
+        let splittedDateB;
         if (dateA.messages.length === 0) {
-          splittedA = ["00/00/0000", "00:00:00"];
+          splittedDateA = ["00/00/0000", "00:00:00"];
           if (dateB.messages.length === 0) {
-            splittedB = ["00/00/0000", "00:00:00"];
+            splittedDateB = ["00/00/0000", "00:00:00"];
           } else {
-            splittedB = dateB.messages[dateB.messages.length - 1].date.split(" ");
+            splittedDateB = dateB.messages[dateB.messages.length - 1].date.split(" ");
           }
         } else if (dateB.messages.length === 0) {
-          splittedA = dateA.messages[dateA.messages.length - 1].date.split(" ");
-          splittedB = ["00/00/0000", "00:00:00"];
+          splittedDateA = dateA.messages[dateA.messages.length - 1].date.split(" ");
+          splittedDateB = ["00/00/0000", "00:00:00"];
         } else {
-          splittedA = dateA.messages[dateA.messages.length - 1].date.split(" ");
-          splittedB = dateB.messages[dateB.messages.length - 1].date.split(" ");
+          splittedDateA = dateA.messages[dateA.messages.length - 1].date.split(" ");
+          splittedDateB = dateB.messages[dateB.messages.length - 1].date.split(" ");
         }
-        const yearA = splittedA[0].split("/")[2];
-        const monthA = splittedA[0].split("/")[1];
-        const dayA = splittedA[0].split("/")[0];
-        const hoursA = splittedA[1].split(":")[0];
-        const minutesA = splittedA[1].split(":")[1];
-        const secondsA = splittedA[1].split(":")[2];
+        const yearA = splittedDateA[0].split("/")[2];
+        const monthA = splittedDateA[0].split("/")[1];
+        const dayA = splittedDateA[0].split("/")[0];
+        const hoursA = splittedDateA[1].split(":")[0];
+        const minutesA = splittedDateA[1].split(":")[1];
+        const secondsA = splittedDateA[1].split(":")[2];
         const completeStringA = `${yearA+monthA+dayA+hoursA+minutesA+secondsA}`;
-        const yearB = splittedB[0].split("/")[2];
-        const monthB = splittedB[0].split("/")[1];
-        const dayB = splittedB[0].split("/")[0];
-        const hoursB = splittedB[1].split(":")[0];
-        const minutesB = splittedB[1].split(":")[1];
-        const secondsB = splittedB[1].split(":")[2];
+        const yearB = splittedDateB[0].split("/")[2];
+        const monthB = splittedDateB[0].split("/")[1];
+        const dayB = splittedDateB[0].split("/")[0];
+        const hoursB = splittedDateB[1].split(":")[0];
+        const minutesB = splittedDateB[1].split(":")[1];
+        const secondsB = splittedDateB[1].split(":")[2];
         const completeStringB = `${yearB+monthB+dayB+hoursB+minutesB+secondsB}`;
         return completeStringB - completeStringA;
       });
@@ -236,7 +236,13 @@ createApp({
     },
     provideLastMessageDate() {
       const actualContact = this.orderedContacts[this.activeContact];
-      const timeString = actualContact.messages[actualContact.messages.length - 1].date.slice(0, 10);
+      let timeString = actualContact.messages[actualContact.messages.length - 1].date.slice(0, 10);
+      const today = new Date().toLocaleDateString('it-IT', {
+        day: '2-digit', month: '2-digit', year: 'numeric',
+      });
+      if (timeString == today) {
+        timeString = "today";
+      }
       return timeString;
     },
     provideLastMessageTime() {

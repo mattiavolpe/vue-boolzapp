@@ -15,11 +15,11 @@
 }
 
 body {
+  font-family: var(--bzap_font_family);
   height: 100vh;
   height: 100svh;
   background: linear-gradient(180deg, var(--bzap_bg_primary) 0%, var(--bzap_bg_primary) 15%, var(--bzap_bg_neutral) 15%, var(--bzap_bg_neutral) 100%);
   color: var(--bzap_dark);
-  font-family: var(--bzap_font_family);
 }
 
 #app {
@@ -51,10 +51,6 @@ body {
   height: 100%;
   padding: 3vh 0;
   padding: 3svh 0;
-}
-
-.content_wrapper {
-  height: 100%;
 }
 
 #left_section {
