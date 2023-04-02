@@ -38,7 +38,7 @@
                   <div class="d-flex align-items-center">
                     <img width="60" class="rounded-circle me-3" src="./assets/img/avatar_io.jpg" alt="User profile image">
                     <div>
-                      <h5 class="m-0">Sofia</h5>
+                      <h5 class="m-0">Mattia</h5>
                     </div>
                   </div>
                   <ul class="d-flex align-items-center list-unstyled m-0 icon_color">
@@ -90,7 +90,7 @@
 
                 <ul id="contacts_list" class="m-0 p-0 list-unstyled">
 
-                  <li v-for="(contact, index) in orderedContacts" class="contact justify-content-between align-items-center px-3" :class="searchContacts(contact) || hasMessages(contact) ? 'd-flex' : 'd-none', activeContact === index ? 'active' : ''" @click="activeContact = index, searchQuery = ''">
+                  <li v-for="(contact, index) in orderedContacts" class="contact justify-content-between align-items-center px-3" :class="searchContacts(contact) || hasMessages(contact) ? 'd-flex' : 'd-none', activeContact === index ? 'active' : ''" @click="activeContact = index, searchQuery = '', newMessage = ''">
                       <div class="left_contact_section d-flex align-items-start">
                         <img v-if="contact.avatar != undefined && contact.avatar.trim() != ''" width="60" class="rounded-circle me-3" :src="`./assets/${contact.avatar.slice(2, contact.avatar.length - 4)}.jpg`" :alt="`${contact.name} image`">
                         <div v-else class="no_avatar me-3">{{findInitials(contact)}}</div>
@@ -133,7 +133,7 @@
                     <li>
                       <i class="fa-solid fa-ellipsis-vertical fa-lg"></i>
                     </li>
-                    <li class="ms-3" @click="activeContact = -1">
+                    <li class="ms-3" @click="activeContact = -1, newMessage = ''">
                       <i class="fa-solid fa-xmark fa-lg"></i>
                     </li>
                   </ul>
@@ -176,6 +176,7 @@
                   <i v-if="activeContact >= 0" class="fa-regular fa-face-smile icon_color fa-lg"></i>
                   <div v-if="activeContact >= 0" class="position-relative">
                     <input type="text" class="text_dark" name="newMessage" id="newMessage" placeholder="Write a new message" v-model.trim="newMessage" @keydown.enter="sendNewMessage()">
+                    <i v-show="newMessage.trim() != ''" class="fa-solid fa-minus icon_color"></i>
                     <i v-show="newMessage.trim() != ''" @click="sendNewMessage()" class="fa-solid fa-paper-plane fa-fw icon_color"></i>
                   </div>
                   <i v-if="activeContact >= 0" class="fa-solid fa-microphone icon_color fa-lg"></i>
