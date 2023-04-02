@@ -28,7 +28,7 @@ createApp({
     return {
       darkMode: false,
       counter: -1, // ID used to track which contact has to answer to a new message, since activeContact will change if the user selects another contact before the 1 second of waiting time
-      activeContact: 0,
+      activeContact: -1,
       newMessage: "",
       searchQuery: "",
       messageToRemove: -1, // The index of the message to remove
@@ -473,6 +473,7 @@ createApp({
         rootElement.style.setProperty('--bzap_active_contact', '#f0f2f5');
         rootElement.style.setProperty('--bzap_sent', '#d9fdd3');
         rootElement.style.setProperty('--bzap_checkmarks', '#70cbe6');
+        rootElement.style.setProperty('--bzap_no_active_contact_bg', '#00000055');
       } else {
         rootElement.style.setProperty('--bzap_chat_bg', '#0b141a');
         rootElement.style.setProperty('--bzap_bg_accent', '#111b21');
@@ -487,6 +488,7 @@ createApp({
         rootElement.style.setProperty('--bzap_active_contact', '#2a3942');
         rootElement.style.setProperty('--bzap_sent', '#005c4b');
         rootElement.style.setProperty('--bzap_checkmarks', '#3ca2be');
+        rootElement.style.setProperty('--bzap_no_active_contact_bg', '#ffffff55');
       }
     },
   },

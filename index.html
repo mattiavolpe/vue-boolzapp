@@ -114,7 +114,7 @@
               <div id="right_section">
 
                 <div id="header_right" class="top_section d-flex justify-content-between align-items-center px-3">
-                  <div class="d-flex align-items-center">
+                  <div v-if="activeContact >= 0" class="d-flex align-items-center">
                     <img v-if="orderedContacts[activeContact].avatar != undefined && orderedContacts[activeContact].avatar.trim() != ''" width="60" class="rounded-circle me-3" :src="`./assets/${orderedContacts[activeContact].avatar.slice(2, orderedContacts[activeContact].avatar.length - 4)}.jpg`" :alt="`${orderedContacts[activeContact].name} image`">
                     <div v-else class="no_avatar me-3">{{findInitials(orderedContacts[activeContact])}}</div>
                     <div>
@@ -123,7 +123,7 @@
                       <span v-else class="m-0 icon_color">Last seen today at {{getCurrentTime()}}</span>
                     </div>
                   </div>
-                  <ul class="d-flex align-items-center list-unstyled m-0 icon_color">
+                  <ul v-if="activeContact >= 0" class="d-flex align-items-center list-unstyled m-0 icon_color">
                     <li>
                       <i class="fa-solid fa-magnifying-glass fa-lg"></i>
                     </li>
@@ -133,13 +133,16 @@
                     <li>
                       <i class="fa-solid fa-ellipsis-vertical fa-lg"></i>
                     </li>
+                    <li class="ms-3" @click="activeContact = -1">
+                      <i class="fa-solid fa-xmark fa-lg"></i>
+                    </li>
                   </ul>
                 </div>
                 <!-- /#header_right.top_section -->
 
                 <main id="right_main_content" class="px-5 py-3 d-flex flex-column flex-shrink-0">
 
-                  <div class="message" v-for="(message, index) in orderedContacts[activeContact].messages">
+                  <div v-if="activeContact >= 0" class="message" v-for="(message, index) in orderedContacts[activeContact].messages">
                     <div class="d-flex justify-content-between" :class="message.status === 'sent' ? 'sent_message' : 'received_message'">
                       <span class="text">{{message.message}}</span>
                       <div class="right_message_section d-flex flex-column justify-content-between align-self-stretch">
@@ -149,25 +152,33 @@
                         <span class="message_time text-end align-self-end">{{message.date.slice(11, 16)}}
                             <i v-if="message.status === 'sent'" class="fa-solid fa-check fa-fw"></i>
                             <i v-if="message.status === 'sent'" class="fa-solid fa-check fa-fw"></i>
-                      </span>
+                        </span>
                       </div>
                       <div class="delete_message_dropdown icon_color" :class="{'d-none': index != messageToRemove}">
-                        <span @click="removeMessage(message)">Delete message</span>
+                        <span @click="removeMessage(message)">
+                          <i class="fa-regular fa-trash-can fa-lg icon_color"></i>
+                          Delete message
+                        </span>
                       </div>
                     </div>
                   </div>
                   <!-- /.message -->
+
+                  <div v-else class="no_active_contact text-center">
+                    <i class="d-block fa-brands fa-whatsapp fa-4x"></i>
+                    Select a contact from the list on the left to see the chat
+                  </div>
                   
                 </main>
                 <!-- /#right_main_content -->
 
                 <div id="bottom_right" class="d-flex justify-content-around align-items-center px-3">
-                  <i class="fa-regular fa-face-smile icon_color fa-lg"></i>
-                  <div class="position-relative">
+                  <i v-if="activeContact >= 0" class="fa-regular fa-face-smile icon_color fa-lg"></i>
+                  <div v-if="activeContact >= 0" class="position-relative">
                     <input type="text" class="text_dark" name="newMessage" id="newMessage" placeholder="Write a new message" v-model.trim="newMessage" @keydown.enter="sendNewMessage()">
                     <i v-show="newMessage.trim() != ''" @click="sendNewMessage()" class="fa-solid fa-paper-plane fa-fw icon_color"></i>
                   </div>
-                  <i class="fa-solid fa-microphone icon_color fa-lg"></i>
+                  <i v-if="activeContact >= 0" class="fa-solid fa-microphone icon_color fa-lg"></i>
                 </div>
                 <!-- /#bottom_right -->
 
