@@ -452,6 +452,41 @@ createApp({
     hasMessages(contact) {
       return contact.visible === true && this.searchQuery.trim() === '';
     },
+    
+    /**
+     * Toggles the theme color of the web app
+     */
+    toggleTheme() {
+      const rootElement = document.querySelector(":root");
+      this.darkMode = !this.darkMode;
+      if (this.darkMode === false) {
+        rootElement.style.setProperty('--bzap_chat_bg', '#efeae2');
+        rootElement.style.setProperty('--bzap_bg_accent', '#00a884');
+        rootElement.style.setProperty('--bzap_bg_neutral', '#dddedd');
+        rootElement.style.setProperty('--bzap_headers_overlays', '#f0f2f5');
+        rootElement.style.setProperty('--bzap_list_and_messages_bg', '#ffffff');
+        rootElement.style.setProperty('--bzap_notification', '#53bdeb');
+        rootElement.style.setProperty('--bzap_bell_background', '#ffffff');
+        rootElement.style.setProperty('--bzap_icon', '#54656f');
+        rootElement.style.setProperty('--bzap_main_text', '#1e1e1e');
+        rootElement.style.setProperty('--bzap_secondary_text', '#8696a0');
+        rootElement.style.setProperty('--bzap_active_contact', '#f0f2f5');
+        rootElement.style.setProperty('--bzap_sent', '#d9fdd3');
+      } else {
+        rootElement.style.setProperty('--bzap_chat_bg', '#0b141a');
+        rootElement.style.setProperty('--bzap_bg_accent', '#111b21');
+        rootElement.style.setProperty('--bzap_bg_neutral', '#111b21');
+        rootElement.style.setProperty('--bzap_headers_overlays', '#202c33');
+        rootElement.style.setProperty('--bzap_list_and_messages_bg', '#111b21');
+        rootElement.style.setProperty('--bzap_notification', '#182229');
+        rootElement.style.setProperty('--bzap_bell_background', '#53bdeb');
+        rootElement.style.setProperty('--bzap_icon', '#8696a0');
+        rootElement.style.setProperty('--bzap_main_text', '#e1e1e1');
+        rootElement.style.setProperty('--bzap_secondary_text', '#8696a0');
+        rootElement.style.setProperty('--bzap_active_contact', '#2a3942');
+        rootElement.style.setProperty('--bzap_sent', '#005c4b');
+      }
+    },
   },
   created() {
     this.orderContacts();
