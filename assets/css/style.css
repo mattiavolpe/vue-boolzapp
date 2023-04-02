@@ -31,6 +31,18 @@ body {
   height: 100%;
 }
 
+#header_left i,
+#activate_notification span,
+#search_contact label > i,
+#contacts_list > li,
+#header_right i,
+#right_main_content .message .fa-chevron-down,
+#right_main_content .message .delete_message_dropdown > span,
+#bottom_right i:not(.fa-minus) {
+  cursor: pointer;
+}
+
+
 /* #endregion Common */
 
 /* #region Utility */
@@ -110,7 +122,7 @@ body {
   background-color: var(--bzap_bell_background);
 }
 
-.fa-bell-slash {
+#activate_notification i {
   color: var(--bzap_notification);
 }
 
