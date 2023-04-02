@@ -26,10 +26,12 @@ const { createApp } = Vue;
 createApp({
   data() {
     return {
+      darkMode: false,
+      counter: -1, // ID used to track which contact has to answer to a new message, since activeContact will change if the user selects another contact before the 1 second of waiting time
       activeContact: 0,
-      newMessage: null,
-      contactToSearch: "",
-      messageToRemove: -1,
+      newMessage: "",
+      searchQuery: "",
+      messageToRemove: -1, // The index of the message to remove
       contacts: [
         {
           name: 'Michele',
@@ -193,50 +195,71 @@ createApp({
           ],
         }
       ],
-      orderedContacts: [],
+      orderedContacts: [], // The array of chronologically ordered chats
     }
   },
   methods: {
     /**
-     * Takes the original array and sort it in chronological order
+     * Takes the original array and sorts the contacts in descending chronological order, so that the one that has the newest message, is on top of the contacts list
      * @returns An array of objects containing the chronologically ordered chats
      */
     orderContacts() {
-      this.orderedContacts = [...this.contacts].sort((dateA, dateB) => {
-        let splittedDateA;
-        let splittedDateB;
-        if (dateA.messages.length === 0) {
-          splittedDateA = ["00/00/0000", "00:00:00"];
-          if (dateB.messages.length === 0) {
-            splittedDateB = ["00/00/0000", "00:00:00"];
-          } else {
-            splittedDateB = dateB.messages[dateB.messages.length - 1].date.split(" ");
-          }
-        } else if (dateB.messages.length === 0) {
-          splittedDateA = dateA.messages[dateA.messages.length - 1].date.split(" ");
-          splittedDateB = ["00/00/0000", "00:00:00"];
-        } else {
-          splittedDateA = dateA.messages[dateA.messages.length - 1].date.split(" ");
-          splittedDateB = dateB.messages[dateB.messages.length - 1].date.split(" ");
-        }
-        const yearA = splittedDateA[0].split("/")[2];
-        const monthA = splittedDateA[0].split("/")[1];
-        const dayA = splittedDateA[0].split("/")[0];
-        const hoursA = splittedDateA[1].split(":")[0];
-        const minutesA = splittedDateA[1].split(":")[1];
-        const secondsA = splittedDateA[1].split(":")[2];
-        const completeStringA = `${yearA+monthA+dayA+hoursA+minutesA+secondsA}`;
-        const yearB = splittedDateB[0].split("/")[2];
-        const monthB = splittedDateB[0].split("/")[1];
-        const dayB = splittedDateB[0].split("/")[0];
-        const hoursB = splittedDateB[1].split(":")[0];
-        const minutesB = splittedDateB[1].split(":")[1];
-        const secondsB = splittedDateB[1].split(":")[2];
-        const completeStringB = `${yearB+monthB+dayB+hoursB+minutesB+secondsB}`;
-        return completeStringB - completeStringA;
+      this.orderedContacts = [...this.contacts].sort((contactA, contactB) => {
+        let splittedDatesAndTimes = this.getDatesAndTimes(contactA, contactB);
+        
+        const completeDateAString = this.composeDateAndTimeString(splittedDatesAndTimes[0]);
+        const completeDateBString = this.composeDateAndTimeString(splittedDatesAndTimes[1]);
+        return completeDateBString - completeDateAString;
       });
       return this.orderedContacts;
     },
+
+    /**
+     * Takes two contacts and returns, for each one of them, an array containing it's latest message date and time 
+     * @param {object} contactA The first contact to be sorted
+     * @param {object} contactB The second contact to be sorted
+     * @returns Two arrays, each one containing the correctly formatted date and time of the latest message of the contact
+     */
+    getDatesAndTimes(contactA, contactB) {
+      let splittedDateA = [];
+      let splittedDateB = [];
+
+      // Check if any of the 2 contacts has no more messages
+      if (contactA.messages.length === 0) {
+        splittedDateA = ["00/00/0000", "00:00:00"];
+        if (contactB.messages.length === 0) {
+          splittedDateB = ["00/00/0000", "00:00:00"];
+        } else {
+          splittedDateB = contactB.messages[contactB.messages.length - 1].date.split(" ");
+        }
+      } else if (contactB.messages.length === 0) {
+        splittedDateA = contactA.messages[contactA.messages.length - 1].date.split(" ");
+        splittedDateB = ["00/00/0000", "00:00:00"];
+      } else {
+        splittedDateA = contactA.messages[contactA.messages.length - 1].date.split(" ");
+        splittedDateB = contactB.messages[contactB.messages.length - 1].date.split(" ");
+      }
+      return [splittedDateA, splittedDateB];
+    },
+
+    /**
+     * Takes the date and the time of the latest message in a chat and combines them in a single word that will be used to chronologically order messages
+     * @param {string[]} dateArray An array of string containing two elements: the date and the time
+     * @returns A string that combines the date and the time in a single word that will be used to chronologically order messages
+     */
+    composeDateAndTimeString(dateArray) {
+      const datePart = dateArray[0];
+      const timePart = dateArray[1];
+      const year = datePart.split("/")[2];
+      const month = datePart.split("/")[1];
+      const day = datePart.split("/")[0];
+      const hours = timePart.split(":")[0];
+      const minutes = timePart.split(":")[1];
+      const seconds = timePart.split(":")[2];
+      const completeString = `${year+month+day+hours+minutes+seconds}`;
+      return completeString;
+    },
+
     /**
      * Takes the currently iterated contact and returns it's initials if it has no avatar
      * @param {object} contact The currently iterated contact
@@ -250,6 +273,7 @@ createApp({
       });
       return initials;
     },
+
     /**
      * Takes the latest message in the chat between the user and the active contact, and returns it's date
      * @returns A string containing the date of the latest message in the chat between the user and the active contact
@@ -265,34 +289,33 @@ createApp({
       }
       return timeString;
     },
+
     /**
      * Takes the latest message in the chat between the user and the active contact, and returns it's time
      * @returns A string containing the time of the latest message in the chat between the user and the active contact
      */
     provideLastMessageTime() {
       const actualContact = this.orderedContacts[this.activeContact];
-      if (actualContact.messages.length === 0) {
-        const timeString = `${new Date().getHours()}:${new Date().getMinutes()}`;
-        return timeString;
-      }
       const timeString = actualContact.messages[actualContact.messages.length - 1].date.slice(11, 16);
       return timeString;
     },
+
     /**
      * Returns a string containing the current time and uses it as the latest seen time for the active contact in case there are no left messages in the chat
      * @returns A string containing the current time
      */
     getCurrentTime() {
-      let actualTime = new Date();
-      actualTime = actualTime.toLocaleTimeString();
-      actualTime = actualTime.slice(0, 5)
-      return actualTime;
+      let currentTime = new Date();
+      currentTime = currentTime.toLocaleTimeString();
+      currentTime = currentTime.slice(0, 5)
+      return currentTime;
     },
+
     /**
      * Returns a string containing the current date and time and uses it as the date property of the new message
      * @returns A string containing the current date and time
      */
-    actualTime() {
+    getFormattedCurrentDateAndTime() {
       const now = new Date();
       const date = now.toLocaleDateString('it-IT', {
         day: '2-digit', month: '2-digit', year: 'numeric',
@@ -311,92 +334,127 @@ createApp({
       }
       return `${date} ${hours}:${minutes}:${seconds}`;
     },
+
     /**
      * Takes the message written by the user and sends it as the newest message in the chat between the user and the contact
      */
     sendNewMessage() {
-      if (this.newMessage === null || this.newMessage.length === 0) {
+
+      // Avoids to send an empty message
+      if (this.newMessage === "" || this.newMessage.trim().length === 0) {
         return;
       }
+
       const newMessageObject = {
-        date: this.actualTime(),
+        date: this.getFormattedCurrentDateAndTime(),
         message: this.newMessage,
         status: 'sent'
       }
-      this.orderedContacts[this.activeContact].visible = true;
+
+      // Sets the visibility back to true in case there are no other messages in the chat
+      this.orderedContacts[this.activeContact].visible = true; 
+
+      // Sends the message to the contact array of messages
       this.orderedContacts[this.activeContact].messages.push(newMessageObject);
-      this.activeContact = 0;
+
+      // Sets the ID of the contact to track who has to receive the following answer
+      const contactWaitingForAnswer = this.orderedContacts[this.activeContact].id;
+
       this.orderContacts();
-      this.scrollToBottom();
-      this.newMessage = null;
-      this.sendAnswer();
+      this.scrollTo("top");
+      setTimeout(() => {
+        this.scrollTo("bottom");
+      }, 1); // 1ms needed to make the scroll to bottom work as expected
+      this.activeContact = 0;
+      this.newMessage = "";
+      this.sendAnswer(contactWaitingForAnswer);
     },
+
     /**
      * Sends an answer 1 second after the user's new message
+     * @param {number} contactId The ID of the contact that has received a new message and has to answer
      */
-    sendAnswer() {
+    sendAnswer(contactId) {
       setTimeout(() => {
         const newAnswer = {
-          date: this.actualTime(),
+          date: this.getFormattedCurrentDateAndTime(),
           message: 'Ok',
           status: 'received'
         }
-        this.orderContacts();
-        this.scrollToBottom();
-        this.orderedContacts[this.activeContact].messages.push(newAnswer);
+
+        // Sends the answer to the contact with the provided ID, so the answer is delivered to the right contact also if the user clicks on another contact in the 1 second waiting time
+        this.orderedContacts[this.orderedContacts.findIndex(contact => contact.id == contactId)].messages.push(newAnswer);
+
+        setTimeout(() => {
+          this.scrollTo("bottom");
+        }, 1); // 1ms needed to make the scroll to bottom work as expected
       }, 1000);
     },
+
     /**
      * Returns a boolean value for every iterated contact whos name contains the text inserted by the user in the "search" field to filter contacts by name
      * @param {object} contact The currently iterated contact
      * @returns A boolean value if the contact's name contains the text inserted by the user in the "search" field
      */
     searchContacts(contact) {
-      if (this.contactToSearch.trim() == '') {
+      if (this.searchQuery.trim() == '') {
         return false;
       }
-      if (contact.name.toLowerCase().includes(this.contactToSearch.trim().toLowerCase())) {
+      if (contact.name.toLowerCase().includes(this.searchQuery.trim().toLowerCase())) {
         return true;
       }
       else {
         return false;
       }
     },
+
     /**
      * Deletes the message the user wants to delete from the active contact messages array
      * @param {object} message The message the user wants to delete
      */
     removeMessage(message) {
+
+      // Creates a lastUser property to know whose contact the user deleted the message
       this.orderedContacts[this.activeContact].lastUser = true;
+
       this.orderedContacts[this.activeContact].messages.splice(this.orderedContacts[this.activeContact].messages.indexOf(message), 1);
+      
       if (this.orderedContacts[this.activeContact].messages.length === 0) {
         this.orderedContacts[this.activeContact].visible = false;
-        this.orderContacts();
-        this.activeContact = this.orderedContacts.findIndex(contact => contact.lastUser);
-        delete this.orderedContacts[this.activeContact].lastUser;
-        return;
       }
       this.orderContacts();
+
+      // Sets the contact with the deleted message as the current contact so the chat stays open also if there are no more messages
       this.activeContact = this.orderedContacts.findIndex(contact => contact.lastUser);
+
+      delete this.orderedContacts[this.activeContact].lastUser;
       this.messageToRemove = -1
     },
+
     /**
-     * Scrolls to the newest message when a new message is sent / received
+     * Scrolls to the newest message and to the top of the contacts list when a new message is sent / received
      */
-    scrollToBottom() {
-      const mainContent = document.getElementById("right_main_content");
-      mainContent.scrollTo(0, 0);
+    scrollTo(position) {
+      if (position === "top") {
+        const contactsList = document.getElementById("contacts_list");
+        contactsList.scrollTo(0, 0);
+      } else {
+        const chatContainer = document.getElementById("right_main_content");
+        chatContainer.scrollTo(0, chatContainer.scrollHeight);
+      }
     },
+
     /**
-     * Returns a boolean value to check if the iterated contact still has messages in the chat with the user
+     * Returns a boolean value to check if the user is not searching for a contact and the iterated contact still has messages in the chat with the user
      * @param {object} contact The currently iterated contact
      * @returns A boolean value to che if the iterated contact still has messages in the chat
      */
     hasMessages(contact) {
-      return contact.visible === true && this.contactToSearch.trim() === '';
+      return contact.visible === true && this.searchQuery.trim() === '';
     },
   },
   created() {
     this.orderContacts();
+    this.orderedContacts.forEach(contact => contact.id = ++this.counter);
   }
 }).mount('#app');

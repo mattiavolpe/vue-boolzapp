@@ -2,24 +2,26 @@
 
 :root {
   --bzap_font_family: 'Roboto', sans-serif;
-  --bzap_bg_primary: #009688;
-  --bzap_bg_neutral: #dadbd3;
-  --bzap_headers_overlays: #eaeaea;
-  --bzap_notification: #8edafc;
-  --bzap_sent: #d5f9ba;
-  --bzap_bg_message_section: #f3eeea;
-  --bzap_icon: #b1b1b1;
-  --bzap_icon_dark: #6b7376;
-  --bzap_white: #ffffff;
-  --bzap_dark: #1e1e1e;
+  --bzap_chat_bg: #efeae2;
+  --bzap_bg_accent: #00a884;
+  --bzap_bg_neutral: #dddedd;
+  --bzap_headers_overlays: #f0f2f5;
+  --bzap_list_and_messages_bg: #ffffff;
+  --bzap_notification: #53bdeb;
+  --bzap_bell_background: #ffffff;
+  --bzap_icon: #54656f;
+  --bzap_main_text: #1e1e1e;
+  --bzap_secondary_text: #8696a0;
+  --bzap_active_contact: #f0f2f5;
+  --bzap_sent: #d9fdd3;
 }
 
 body {
   font-family: var(--bzap_font_family);
   height: 100vh;
   height: 100svh;
-  background: linear-gradient(180deg, var(--bzap_bg_primary) 0%, var(--bzap_bg_primary) 15%, var(--bzap_bg_neutral) 15%, var(--bzap_bg_neutral) 100%);
-  color: var(--bzap_dark);
+  background: linear-gradient(180deg, var(--bzap_bg_accent) 0%, var(--bzap_bg_accent) 15%, var(--bzap_bg_neutral) 15%, var(--bzap_bg_neutral) 100%);
+  color: var(--bzap_main_text);
 }
 
 #app {
@@ -32,25 +34,31 @@ body {
 /* #region Utility */
 
 .text_dark {
-  color: var(--bzap_dark);
+  color: var(--bzap_main_text);
 }
 
 .icon_color {
   color: var(--bzap_icon);
 }
 
-.icon_color_dark {
-  color: var(--bzap_icon_dark);
-}
-
 .container-fluid {
+  position: relative;
   height: 100%;
 }
 
-.container {
-  height: 100%;
-  padding: 3vh 0;
-  padding: 3svh 0;
+.my_container {
+  display: flex;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 94vh;
+  height: 94svh;
+  width: 96%;
+  max-width: 1320px;
+  box-shadow: -2px 2px 10px -4px var(--bzap_icon);
+  border-radius: 12px;
+  overflow: hidden;
 }
 
 /* #endregion Utility */
@@ -59,15 +67,16 @@ body {
 
 #left_section {
   width: 30%;
-  min-width: 290px;
+  min-width: 265px;
   height: 100%;
+  overflow: hidden;
 }
 
 #right_section {
   flex-grow: 1;
-  min-width: 290px;
+  min-width: 335px;
   height: 100%;
-  border-left: 1px solid var(--bzap_icon);
+  border-left: 1px solid var(--bzap_bg_neutral);
 }
 
 .top_section {
@@ -96,7 +105,7 @@ body {
   border-radius: 50%;
   width: 50px;
   aspect-ratio: 1 / 1;
-  background-color: var(--bzap_white);
+  background-color: var(--bzap_bell_background);
 }
 
 .fa-bell-slash {
@@ -105,33 +114,39 @@ body {
 
 #search_contact {
   height: 50px;
-  background-color: var(--bzap_bg_message_section);
+  background-color: var(--bzap_list_and_messages_bg);
 }
 
 #search_contact > div {
-  width: 100%;
   height: 30px;
 }
 
 #search_contact label {
   border-top-left-radius: 6px;
   border-bottom-left-radius: 6px;
-  border: 1px solid var(--bzap_icon);
-  border-right: 0;
+  border: none;
+  color: var(--bzap_icon);
+  background-color: var(--bzap_headers_overlays);
 }
 
 #search_contact input {
   min-width: 0;
   border-top-right-radius: 6px;
   border-bottom-right-radius: 6px;
-  border: 1px solid var(--bzap_icon);
-  border-left: 0;
+  border: none;
+  color: var(--bzap_icon);
+  background-color: var(--bzap_headers_overlays);
+}
+
+#search_contact input::placeholder {
+  color: var(--bzap_icon);
 }
 
 #contacts_list {
   /* Heights to consider: header_left, activate_notification and search_contact */
   height: calc(100% - 205px);
   overflow-y: auto;
+  background-color: var(--bzap_list_and_messages_bg);
 }
 
 #contacts_list > li {
@@ -144,7 +159,7 @@ body {
 }
 
 #contacts_list > li.active {
-  background-color: var(--bzap_headers_overlays);
+  background-color: var(--bzap_active_contact);
 }
 
 #contacts_list .no_avatar,
@@ -156,12 +171,17 @@ body {
   aspect-ratio: 1 / 1;
   border-radius: 50%;
   font-size: 1.125rem;
-  color: var(--bzap_white);
-  background-color: var(--bzap_bg_primary);
+  color: var(--bzap_list_and_messages_bg);
+  background-color: var(--bzap_bg_accent);
 }
 
 #contacts_list span {
+  color: var(--bzap_secondary_text);
   font-size: 0.8rem;
+}
+
+.left_contact_section span {
+  word-break: break-all;
 }
 
 /* #endregion Left section */
@@ -170,7 +190,8 @@ body {
 
 #right_main_content {
   height: calc(100% - 140px);
-  background-image: url("./../img/mine.jpg");
+  background: var(--bzap_chat_bg) url(./../img/chat_bg.png);
+  background-blend-mode: overlay;
   overflow-y: auto;
 }
 
@@ -185,8 +206,8 @@ body {
   display: flex;
   align-items: center;
   width: 45%;
-  min-width: min-content;
   min-height: 50px;
+  word-break: break-all;
   padding: 0 0.25rem 0 1rem;
   border-radius: 6px;
 }
@@ -197,17 +218,19 @@ body {
 }
 
 #right_main_content .received_message {
-  background-color: var(--bzap_white);
+  background-color: var(--bzap_list_and_messages_bg);
 }
 
 .message > div {
   position: relative;
-  box-shadow: -2px 2px 5px 0 var(--bzap_icon_dark);
+  box-shadow: -2px 2px 10px -4px var(--bzap_icon);
 }
 
 .message .right_message_section {
   font-size: 10px;
   padding: 4px 4px 4px 0;
+  word-break: keep-all;
+  color: var(--bzap_secondary_text);
 }
 
 .delete_message_dropdown {
@@ -218,18 +241,40 @@ body {
   text-align: center;
   padding: 0.75rem 0;
   border-radius: 3px;
-  box-shadow: -2px 2px 5px 0 var(--bzap_icon_dark);
-  background-color: var(--bzap_white);
+  box-shadow: -2px 2px 10px -4px var(--bzap_icon);
+  background-color: var(--bzap_list_and_messages_bg);
   font-size: 0.875rem;
 }
 
 #bottom_right {
   height: 70px;
-  background-color: var(--bzap_bg_message_section);
+  background-color: var(--bzap_headers_overlays);
+}
+
+#bottom_right > div {
+  width: 80%;
 }
 
 #bottom_right input {
-  width: 80%;
+  width: 100%;
+  height: 30px;
+  min-width: 0;
+  border-radius: 6px;
+  border: none;
+  color: var(--bzap_icon);
+  padding: 0 6px;
+  background-color: var(--bzap_list_and_messages_bg);
+}
+
+#bottom_right input::placeholder {
+  color: var(--bzap_icon);
+}
+
+#bottom_right > div > i {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  transform: translate(-30%, -50%);
 }
 
 /* #endregion Right section */
