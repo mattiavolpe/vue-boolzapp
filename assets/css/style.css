@@ -14,6 +14,7 @@
   --bzap_secondary_text: #8696a0;
   --bzap_active_contact: #f0f2f5;
   --bzap_sent: #d9fdd3;
+  --bzap_checkmarks: #70cbe6;
 }
 
 body {
@@ -227,10 +228,22 @@ body {
 }
 
 .message .right_message_section {
+  min-width: 50px;
+  max-width: 50px;
   font-size: 10px;
   padding: 4px 4px 4px 0;
   word-break: keep-all;
   color: var(--bzap_secondary_text);
+}
+
+.message span:last-child i:first-child {
+  margin-right: -9px;
+  color: var(--bzap_checkmarks);
+}
+
+.message span:last-child i:last-child {
+  clip-path: polygon(23.5% 0, 100% 0, 100% 100%, 23.5% 100%);
+  color: var(--bzap_checkmarks);
 }
 
 .delete_message_dropdown {
@@ -262,7 +275,7 @@ body {
   border-radius: 6px;
   border: none;
   color: var(--bzap_icon);
-  padding: 0 6px;
+  padding: 0 12px;
   background-color: var(--bzap_list_and_messages_bg);
 }
 
@@ -273,7 +286,7 @@ body {
 #bottom_right > div > i {
   position: absolute;
   top: 50%;
-  right: 6px;
+  right: 5px;
   transform: translate(-30%, -50%);
 }
 

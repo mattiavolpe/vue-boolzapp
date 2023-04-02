@@ -452,7 +452,7 @@ createApp({
     hasMessages(contact) {
       return contact.visible === true && this.searchQuery.trim() === '';
     },
-    
+
     /**
      * Toggles the theme color of the web app
      */
@@ -472,6 +472,7 @@ createApp({
         rootElement.style.setProperty('--bzap_secondary_text', '#8696a0');
         rootElement.style.setProperty('--bzap_active_contact', '#f0f2f5');
         rootElement.style.setProperty('--bzap_sent', '#d9fdd3');
+        rootElement.style.setProperty('--bzap_checkmarks', '#70cbe6');
       } else {
         rootElement.style.setProperty('--bzap_chat_bg', '#0b141a');
         rootElement.style.setProperty('--bzap_bg_accent', '#111b21');
@@ -485,6 +486,7 @@ createApp({
         rootElement.style.setProperty('--bzap_secondary_text', '#8696a0');
         rootElement.style.setProperty('--bzap_active_contact', '#2a3942');
         rootElement.style.setProperty('--bzap_sent', '#005c4b');
+        rootElement.style.setProperty('--bzap_checkmarks', '#3ca2be');
       }
     },
   },
