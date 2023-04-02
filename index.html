@@ -88,6 +88,18 @@
                 </div>
                 <!-- /#search_contact -->
 
+                <div id="favourite_messages" class="d-flex align-items-center px-3" @click="activeContact = -1">
+
+                  <div class="favourite_messages_icon_container me-3">
+                    <i class="fa-solid fa-star fa-2x"></i>
+                  </div>
+                  <!-- /.favourite_messages_icon_container -->
+                  
+                  <h6 class="m-0">Favourite messages</h6>
+                
+                </div>
+                <!-- /#favourite_messages -->
+
                 <ul id="contacts_list" class="m-0 p-0 list-unstyled">
 
                   <li v-for="(contact, index) in orderedContacts" class="contact justify-content-between align-items-center px-3" :class="searchContacts(contact) || hasMessages(contact) ? 'd-flex' : 'd-none', activeContact === index ? 'active' : ''" @click="activeContact = index, searchQuery = '', newMessage = ''">
@@ -123,7 +135,14 @@
                       <span v-else class="m-0 icon_color">Last seen today at {{getCurrentTime()}}</span>
                     </div>
                   </div>
-                  <ul v-if="activeContact >= 0" class="d-flex align-items-center list-unstyled m-0 icon_color">
+                  <div v-else-if="activeContact == -1 && favouritesMessages.length > 0" class="favourite_messages_header d-flex align-items-center px-3" @click="activeContact = -1">
+
+                    <i class="fa-solid fa-star fa-2x me-3"></i>
+                    <h5 class="m-0">Favourite messages</h5>
+                  
+                  </div>
+
+                  <ul v-if="activeContact >= 0 || favouritesMessages.length > 0" class="d-flex align-items-center list-unstyled m-0 icon_color">
                     <li>
                       <i class="fa-solid fa-magnifying-glass fa-lg"></i>
                     </li>
@@ -133,7 +152,7 @@
                     <li>
                       <i class="fa-solid fa-ellipsis-vertical fa-lg"></i>
                     </li>
-                    <li class="ms-3" @click="activeContact = -1, newMessage = ''">
+                    <li class="ms-3" @click="activeContact = -2, newMessage = ''">
                       <i class="fa-solid fa-xmark fa-lg"></i>
                     </li>
                   </ul>
@@ -147,14 +166,22 @@
                       <span class="text">{{message.message}}</span>
                       <div class="right_message_section d-flex flex-column justify-content-between align-self-stretch">
                         <span @click.stop="messageToRemove = index" class="text-end">
-                          <i class="fa-solid fa-chevron-down fa-fw text-end"></i>
+                          <i class="fa-solid fa-chevron-down fa-fw text-end" @click="checkIfRemovedFromSavedMessages(message)"></i>
                         </span>
                         <span class="message_time text-end align-self-end">{{message.date.slice(11, 16)}}
                             <i v-if="message.status === 'sent'" class="fa-solid fa-check fa-fw"></i>
                             <i v-if="message.status === 'sent'" class="fa-solid fa-check fa-fw"></i>
                         </span>
                       </div>
-                      <div class="delete_message_dropdown icon_color" :class="{'d-none': index != messageToRemove}">
+                      <div class="delete_message_dropdown icon_color" :class="{'d-none': index != messageToRemove}, {'d-flex flex-column align-items-end': index == messageToRemove}">
+                        <span v-if="message.saved != true" @click="toggleFavourites(message)" class="mb-2">
+                          <i class="fa-regular fa-square-plus fa-lg icon_color"></i>
+                          Add to favourites
+                        </span>
+                        <span v-else @click="toggleFavourites(message)" class="mb-2">
+                          <i class="fa-regular fa-square-minus fa-lg icon_color"></i>
+                          Remove from favourites
+                        </span>
                         <span @click="removeMessage(message)">
                           <i class="fa-regular fa-trash-can fa-lg icon_color"></i>
                           Delete message
@@ -163,6 +190,36 @@
                     </div>
                   </div>
                   <!-- /.message -->
+
+                  <div v-else-if="activeContact == -1 && favouritesMessages.length > 0" class="favourite message d-flex justify-content-between align-items-center" v-for="(message, index) in favouritesMessages">
+                    <h6 class="m-0">
+                      {{message.status == 'received' ? `Message received from ${message.contact}` : `Messange sent to ${message.contact}`}}
+                    </h6>
+                    <div class="d-flex justify-content-between" :class="message.status === 'sent' ? 'sent_message' : 'received_message'">
+                      <span class="text">{{message.message}}</span>
+                      <div class="right_message_section d-flex flex-column justify-content-between align-self-stretch">
+                        <span @click.stop="messageToRemove = index" class="text-end">
+                          <i class="fa-solid fa-chevron-down fa-fw text-end"></i>
+                        </span>
+                        <span class="message_time text-end align-self-end">{{message.date.slice(11, 16)}}
+                            <i v-if="message.status === 'sent'" class="fa-solid fa-check fa-fw"></i>
+                            <i v-if="message.status === 'sent'" class="fa-solid fa-check fa-fw"></i>
+                        </span>
+                      </div>
+                      <div class="delete_message_dropdown icon_color" :class="{'d-none': index != messageToRemove}, {'d-flex flex-column align-items-end': index == messageToRemove}">
+                        <span @click="toggleFavourites(message)">
+                          <i class="fa-regular fa-square-minus fa-lg icon_color"></i>
+                          Remove from favourites
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div v-else-if="activeContact == -1 && favouritesMessages.length == 0" class="no_active_contact text-center">
+                    <i class="d-block fa-brands fa-whatsapp fa-4x"></i>
+                    You have no favourite messages.
+                    Select a contact from the list on the left to see the chat
+                  </div>
 
                   <div v-else class="no_active_contact text-center">
                     <i class="d-block fa-brands fa-whatsapp fa-4x"></i>

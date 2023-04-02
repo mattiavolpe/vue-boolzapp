@@ -28,7 +28,7 @@ createApp({
     return {
       darkMode: false,
       counter: -1, // ID used to track which contact has to answer to a new message, since activeContact will change if the user selects another contact before the 1 second of waiting time
-      activeContact: -1,
+      activeContact: -2,
       newMessage: "",
       searchQuery: "",
       messageToRemove: -1, // The index of the message to remove
@@ -196,6 +196,8 @@ createApp({
         }
       ],
       orderedContacts: [], // The array of chronologically ordered chats
+      favouritesMessages: [],
+      savedMessageId: -1,
     }
   },
   methods: {
@@ -417,6 +419,14 @@ createApp({
       // Creates a lastUser property to know whose contact the user deleted the message
       this.orderedContacts[this.activeContact].lastUser = true;
 
+      // If the message that the user wants to delete is a favourite message, removes the message from the favourite messages array too
+      if (message.saved == true) {
+        const index = this.favouritesMessages.findIndex(favMessage => favMessage.savedId == message.savedId);
+        this.favouritesMessages.splice(index, 1);
+        delete message.saved;
+        delete message.savedId;
+      }
+
       this.orderedContacts[this.activeContact].messages.splice(this.orderedContacts[this.activeContact].messages.indexOf(message), 1);
       
       if (this.orderedContacts[this.activeContact].messages.length === 0) {
@@ -429,6 +439,45 @@ createApp({
 
       delete this.orderedContacts[this.activeContact].lastUser;
       this.messageToRemove = -1
+    },
+
+    /**
+     * Save the message the user wants to save into the favourites messages array
+     * @param {object} message The message the user wants to save
+     */
+    toggleFavourites(message) {
+      if (message.saved != true) {
+        message.saved = true;
+        message.savedId = ++this.savedMessageId;
+        const messageToSave = {
+          contact: this.orderedContacts[this.activeContact].name,
+          date: message.date,
+          message: message.message,
+          status: message.status,
+          saved: true,
+          savedId: message.savedId,
+        }
+        this.favouritesMessages.push(messageToSave);
+      } else {
+        const index = this.favouritesMessages.findIndex(favMessage => favMessage.savedId == message.savedId);
+        this.favouritesMessages.splice(index, 1);
+        delete message.saved;
+        delete message.savedId;
+      }
+    },
+
+    /**
+     * Checks if the message has already been removed from the favourite messages window instead that from the chat window
+     * @param {object} message The message the user clicked on
+     */
+    checkIfRemovedFromSavedMessages(message) {
+      if (message.saved == true) {
+        const index = this.favouritesMessages.findIndex(favMessage => favMessage.savedId == message.savedId);
+        if (index == -1) {
+          delete message.saved;
+          delete message.savedId;
+        }
+      }
     },
 
     /**

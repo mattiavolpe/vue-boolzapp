@@ -34,6 +34,7 @@ body {
 #header_left i,
 #activate_notification span,
 #search_contact label > i,
+#favourite_messages,
 #contacts_list > li,
 #header_right i,
 #right_main_content .message .fa-chevron-down,
@@ -41,7 +42,6 @@ body {
 #bottom_right i:not(.fa-minus) {
   cursor: pointer;
 }
-
 
 /* #endregion Common */
 
@@ -156,9 +156,21 @@ body {
   color: var(--bzap_icon);
 }
 
+#favourite_messages {
+  height: 85px;
+  background-color: var(--bzap_sent);
+}
+
+#favourite_messages > .favourite_messages_icon_container {
+  width: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 #contacts_list {
-  /* Heights to consider: header_left, activate_notification and search_contact */
-  height: calc(100% - 205px);
+  /* Heights to consider: header_left, activate_notification, search_contact and favourites_messages*/
+  height: calc(100% - 290px);
   overflow-y: auto;
   background-color: var(--bzap_list_and_messages_bg);
 }
@@ -202,15 +214,6 @@ body {
 
 /* #region Right section */
 
-#right_main_content {
-  position: relative;
-  height: calc(100% - 140px);
-  background: var(--bzap_chat_bg) url(./../img/chat_bg.png);
-  background-blend-mode: overlay;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
 .no_active_contact {
   position: absolute;
   top: 50%;
@@ -228,6 +231,15 @@ body {
   filter: drop-shadow(-2px 2px 3px var(--bzap_chat_bg));
 }
 
+#right_main_content {
+  position: relative;
+  height: calc(100% - 140px);
+  background: var(--bzap_chat_bg) url(./../img/chat_bg.png);
+  background-blend-mode: overlay;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
 #right_main_content .message {
   flex-basis: 62px;
   flex-shrink: 0;
@@ -243,6 +255,8 @@ body {
   word-break: break-all;
   padding: 0 0.25rem 0 1rem;
   border-radius: 6px;
+  position: relative;
+  box-shadow: -2px 2px 10px -4px var(--bzap_icon);
 }
 
 #right_main_content .sent_message {
@@ -254,10 +268,17 @@ body {
   background-color: var(--bzap_list_and_messages_bg);
 }
 
-.message > div {
-  position: relative;
-  box-shadow: -2px 2px 10px -4px var(--bzap_icon);
+#right_main_content .favourite h6 {
+  width: 45%;
+  word-break: break-all;
+  font-weight: 400;
 }
+
+#right_main_content .favourite .sent_message,
+#right_main_content .favourite .received_message {
+  margin: 0;
+}
+
 
 .message .right_message_section {
   min-width: 50px;
@@ -282,6 +303,7 @@ body {
   position: absolute;
   right: 14px;
   top: 14px;
+  z-index: 1;
   text-align: center;
   padding: 0.75rem 1rem;
   border-radius: 3px;
