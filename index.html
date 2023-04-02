@@ -142,7 +142,7 @@
                   
                   </div>
 
-                  <ul v-if="activeContact >= 0 || favouritesMessages.length > 0" class="d-flex align-items-center list-unstyled m-0 icon_color">
+                  <ul v-if="activeContact >= 0 || (favouritesMessages.length > 0 && activeContact == -1)" class="d-flex align-items-center list-unstyled m-0 icon_color">
                     <li>
                       <i class="fa-solid fa-magnifying-glass fa-lg"></i>
                     </li>
