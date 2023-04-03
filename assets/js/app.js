@@ -202,6 +202,9 @@ createApp({
         "Interessante, dimmi di più", "Capisco il tuo punto di vista", "Effettivamente, non ci avevo pensato", "Credo che tu abbia ragione", "Beh, non è una cattiva idea", "Sì, esatto, esattamente quello che intendevo", "Sono d'accordo con te al 100%", "È una situazione complicata, ci vuole un po' di tempo per pensarci", "Hmm, non so, dovrei informarmi di più", "Mi sembra una soluzione valida", "Certo, va bene per me", "Non vedo l'ora di scoprirlo", "Mi stai facendo ridere", "Ho bisogno di rifletterci ancora un po'", "Sì, mi sembra una buona idea", "È un punto di vista interessante, ma personalmente la vedo diversamente", "Grazie per la tua opinione, l'ho apprezzata molto", "Non c'è problema", "Certo, fammi sapere quando ci sei", "Ti ringrazio per avermene parlato, apprezzo la tua sincerità",
       ],
       menuOpened: false,
+      newContactWindow: false,
+      newContactName: "",
+      newContactImage: "",
     }
   },
   methods: {

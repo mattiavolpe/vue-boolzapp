@@ -83,7 +83,7 @@ body {
 
 #left_section {
   width: 30%;
-  min-width: 265px;
+  min-width: 275px;
   height: 100%;
   overflow: hidden;
 }
@@ -348,3 +348,23 @@ body {
 }
 
 /* #endregion Right section */
+
+/* #region New Contact Popup */
+
+#newContactPopup {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transform: translate(100%, 0);
+  width: 50%;
+  min-width: 243px;
+  height: calc(100% - 70px);
+  background-color: var(--bzap_headers_overlays);
+  transition: transform 1s;
+}
+
+#newContactPopup.visible {
+  transform: translate(0, 0);
+}
+
+/* #endregion New Contact Popup */
