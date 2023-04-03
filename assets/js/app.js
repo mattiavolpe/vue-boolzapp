@@ -197,12 +197,12 @@ createApp({
       ],
       orderedContacts: [], // The array of chronologically ordered chats
       favouritesMessages: [],
-      savedMessageId: -1,
+      savedMessageId: -1, // ID for the favourite messages
       randomAnswers: [
         "Interessante, dimmi di più", "Capisco il tuo punto di vista", "Effettivamente, non ci avevo pensato", "Credo che tu abbia ragione", "Beh, non è una cattiva idea", "Sì, esatto, esattamente quello che intendevo", "Sono d'accordo con te al 100%", "È una situazione complicata, ci vuole un po' di tempo per pensarci", "Hmm, non so, dovrei informarmi di più", "Mi sembra una soluzione valida", "Certo, va bene per me", "Non vedo l'ora di scoprirlo", "Mi stai facendo ridere", "Ho bisogno di rifletterci ancora un po'", "Sì, mi sembra una buona idea", "È un punto di vista interessante, ma personalmente la vedo diversamente", "Grazie per la tua opinione, l'ho apprezzata molto", "Non c'è problema", "Certo, fammi sapere quando ci sei", "Ti ringrazio per avermene parlato, apprezzo la tua sincerità",
       ],
-      menuOpened: false,
-      newContactWindow: false,
+      menuOpened: false, // A boolean to check if a dropdown is open or not
+      newContactWindow: false, // A boolean to check if the new contact popup window is open or not
       newContactName: "",
       newContactImage: "",
     }
@@ -573,6 +573,27 @@ createApp({
         rootElement.style.setProperty('--bzap_no_active_contact_bg', '#ffffff55');
       }
     },
+
+    /**
+     * Creates a new contact and inserts it in the array of contacts
+     */
+    addNewContact() {
+      if(this.newContactName.length == 0 || (this.newContactImage != "" && this.newContactImage.length < 3)) {
+        return
+      }        
+      const newContactBaseObject = {
+        name: this.newContactName,
+        visible: false,
+        messages: [],
+        avatar: this.newContactImage != "" ? this.newContactImage : "",
+      }
+      this.contacts.push(newContactBaseObject);
+      this.orderContacts();
+      this.newContactName = "";
+      this.newContactImage = "";
+      this.newContactWindow = false;
+      this.activeContact = this.orderedContacts.length - 1;
+    }
   },
   created() {
     this.orderContacts();

@@ -9,6 +9,8 @@ Still a work in progress, but the following features are already included:
 ---
 - **Dark / Light mode** toggler.
 ---
+- You can **add a new contact** providing at least it's name. If you don't provide an image, the **contact's initials** will be used.
+---
 - You can **search** a contact name (**no matter** if you type the **beginning** of it's name, the **end**, a **middle part**, if you type **upper-case**, **lower-case** or **both**) and **chat with him**, also if the contact **has been removed from the contact list because you have removed all the messages with him**.
 ---
 - **Dynamic** and **chronologically ordered contact list**.
