@@ -83,7 +83,7 @@ body {
 
 #left_section {
   width: 30%;
-  min-width: 275px;
+  min-width: 280px;
   height: 100%;
   overflow: hidden;
 }
@@ -357,7 +357,7 @@ body {
   right: 0;
   transform: translate(105%, -50%);
   width: 50%;
-  min-width: 243px;
+  min-width: 248px;
   border-top-left-radius: 12px;
   border-bottom-left-radius: 12px;
   background-color: var(--bzap_sent);
@@ -388,6 +388,12 @@ body {
   box-shadow: -2px 2px 3px 0 var(--bzap_secondary_text);
   background-color: var(--bzap_list_and_messages_bg);
   color: var(--bzap_main_text);
+}
+
+#newContactPopup i {
+  position: absolute;
+  top: 20px;
+  right: 16px;
 }
 
 /* #endregion New Contact Popup */

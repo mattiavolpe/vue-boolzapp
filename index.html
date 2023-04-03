@@ -46,7 +46,7 @@
                       <i class="fa-solid fa-circle-notch fa-lg"></i>
                     </li>
                     <li class="mx-3">
-                      <i @click.stop="newContactWindow = !newContactWindow" class="fa-solid fa-user-plus fa-lg"></i>
+                      <i @click.stop="newContactWindow = !newContactWindow, newContactName = '', newContactImage = ''" class="fa-solid fa-user-plus fa-lg"></i>
                     </li>
                     <li @click.stop="toggleTheme()">
                       <i class="fa-solid fa-moon fa-lg" v-if="darkMode === false"></i>
@@ -259,6 +259,7 @@
                   <button @click="newContactName = '';
                   newContactImage = ''" class="border-0 mt-3 mx-2">Reset</button>
                 </div>
+                <i class="fa-solid fa-xmark fa-lg icon_color" @click="newContactWindow = !newContactWindow, newContactName = '', newContactImage = ''"></i>
               </div>
               <!-- /#newContactPopup -->
 
