@@ -150,7 +150,7 @@
                       <i class="fa-solid fa-paperclip fa-lg"></i>
                     </li>
                     <li class="position-relative">
-                      <i class="fa-solid fa-ellipsis-vertical fa-lg" @click.stop="menuOpened = !menuOpened"></i>
+                      <i class="fa-solid fa-ellipsis-vertical fa-lg" @click.stop="menuOpened = !menuOpened, messageToRemove = -1"></i>
                       <div class="dropdown icon_color" :class="{'d-none': menuOpened == false}, {'d-flex flex-column align-items-end': menuOpened == true}">
                         <span @click.stop="deleteAllMessages(activeContact)">
                           <i class="fa-regular fa-trash-can fa-lg icon_color"></i>
@@ -172,7 +172,7 @@
                       <span class="text">{{message.message}}</span>
                       <div class="right_message_section d-flex flex-column justify-content-between align-self-stretch">
                         <span class="text-end">
-                          <i class="fa-solid fa-chevron-down fa-fw text-end" @click.stop="checkIfRemovedFromSavedMessages(message), messageToRemove == -1 ? messageToRemove = index : messageToRemove = -1"></i>
+                          <i class="fa-solid fa-chevron-down fa-fw text-end" @click.stop="checkIfRemovedFromSavedMessages(message), messageToRemove == index ? messageToRemove = -1 : messageToRemove = index, menuOpened = false"></i>
                         </span>
                         <span class="message_time text-end align-self-end">{{message.date.slice(11, 16)}}
                             <i v-if="message.status === 'sent'" class="fa-solid fa-check fa-fw"></i>

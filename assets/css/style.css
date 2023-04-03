@@ -40,7 +40,8 @@ body {
 #header_right ul span,
 #right_main_content .message .fa-chevron-down,
 #right_main_content .message .ropdown > span,
-#bottom_right i {
+#bottom_right i,
+.dropdown span {
   cursor: pointer;
 }
 
