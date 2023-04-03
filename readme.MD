@@ -23,6 +23,7 @@ Still a work in progress, but the following features are already included:
 ---
 - **Delete messages**.
 - If you **delete** a message that **was a favourite message**, it will be **removed** from the **Favourite message window too**.
+- You can **delete all the messages** within a chat with a single click. The chat will **stay open** so you can **keep messaging** with the contact. If you want to **close the chat**, just **click the X** in the upper right corner.
 ---
 - **Dynamic "last seen" message** with the date and time of the last message in the chat or, if there are **no messages**, with the date and time of **now**.
 ---
