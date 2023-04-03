@@ -198,12 +198,15 @@ createApp({
       orderedContacts: [], // The array of chronologically ordered chats
       favouritesMessages: [],
       savedMessageId: -1,
+      randomAnswers: [
+        "Interessante, dimmi di più", "Capisco il tuo punto di vista", "Effettivamente, non ci avevo pensato", "Credo che tu abbia ragione", "Beh, non è una cattiva idea", "Sì, esatto, esattamente quello che intendevo", "Sono d'accordo con te al 100%", "È una situazione complicata, ci vuole un po' di tempo per pensarci", "Hmm, non so, dovrei informarmi di più", "Mi sembra una soluzione valida", "Certo, va bene per me", "Non vedo l'ora di scoprirlo", "Mi stai facendo ridere", "Ho bisogno di rifletterci ancora un po'", "Sì, mi sembra una buona idea", "È un punto di vista interessante, ma personalmente la vedo diversamente", "Grazie per la tua opinione, l'ho apprezzata molto", "Non c'è problema", "Certo, fammi sapere quando ci sei", "Ti ringrazio per avermene parlato, apprezzo la tua sincerità",
+      ]
     }
   },
   methods: {
     /**
      * Takes the original array and sorts the contacts in descending chronological order, so that the one that has the newest message, is on top of the contacts list
-     * @returns An array of objects containing the chronologically ordered chats
+     * @returns {object[]} An array of objects containing the chronologically ordered chats
      */
     orderContacts() {
       this.orderedContacts = [...this.contacts].sort((contactA, contactB) => {
@@ -220,7 +223,7 @@ createApp({
      * Takes two contacts and returns, for each one of them, an array containing it's latest message date and time 
      * @param {object} contactA The first contact to be sorted
      * @param {object} contactB The second contact to be sorted
-     * @returns Two arrays, each one containing the correctly formatted date and time of the latest message of the contact
+     * @returns {string[]} An array with two strings, each one containing the correctly formatted date and time of the latest message of the contact
      */
     getDatesAndTimes(contactA, contactB) {
       let splittedDateA = [];
@@ -247,7 +250,7 @@ createApp({
     /**
      * Takes the date and the time of the latest message in a chat and combines them in a single word that will be used to chronologically order messages
      * @param {string[]} dateArray An array of string containing two elements: the date and the time
-     * @returns A string that combines the date and the time in a single word that will be used to chronologically order messages
+     * @returns {string} A string that combines the date and the time in a single word that will be used to chronologically order messages
      */
     composeDateAndTimeString(dateArray) {
       const datePart = dateArray[0];
@@ -265,7 +268,7 @@ createApp({
     /**
      * Takes the currently iterated contact and returns it's initials if it has no avatar
      * @param {object} contact The currently iterated contact
-     * @returns A string containing the initials of the contact
+     * @returns {string} A string containing the initials of the contact
      */
     findInitials(contact) {
       const nameParts = contact.name.split(" ");
@@ -278,7 +281,7 @@ createApp({
 
     /**
      * Takes the latest message in the chat between the user and the active contact, and returns it's date
-     * @returns A string containing the date of the latest message in the chat between the user and the active contact
+     * @returns {string} A string containing the date of the latest message in the chat between the user and the active contact
      */
     provideLastMessageDate() {
       const actualContact = this.orderedContacts[this.activeContact];
@@ -294,7 +297,7 @@ createApp({
 
     /**
      * Takes the latest message in the chat between the user and the active contact, and returns it's time
-     * @returns A string containing the time of the latest message in the chat between the user and the active contact
+     * @returns {string} A string containing the time of the latest message in the chat between the user and the active contact
      */
     provideLastMessageTime() {
       const actualContact = this.orderedContacts[this.activeContact];
@@ -304,7 +307,7 @@ createApp({
 
     /**
      * Returns a string containing the current time and uses it as the latest seen time for the active contact in case there are no left messages in the chat
-     * @returns A string containing the current time
+     * @returns {string} A string containing the current time
      */
     getCurrentTime() {
       let currentTime = new Date();
@@ -315,7 +318,7 @@ createApp({
 
     /**
      * Returns a string containing the current date and time and uses it as the date property of the new message
-     * @returns A string containing the current date and time
+     * @returns {string} A string containing the current date and time
      */
     getFormattedCurrentDateAndTime() {
       const now = new Date();
@@ -380,7 +383,7 @@ createApp({
       setTimeout(() => {
         const newAnswer = {
           date: this.getFormattedCurrentDateAndTime(),
-          message: 'Ok',
+          message: this.getRandomAnwer(this.randomAnswers.length - 1),
           status: 'received'
         }
 
@@ -394,9 +397,18 @@ createApp({
     },
 
     /**
+     * 
+     * @param {number} max The index of the last element in the randomAnswers array
+     * @returns {number} The index of a random answer
+     */
+    getRandomAnwer(max) {
+      return this.randomAnswers[Math.floor(Math.random() * (max + 1))];
+    },
+
+    /**
      * Returns a boolean value for every iterated contact whos name contains the text inserted by the user in the "search" field to filter contacts by name
      * @param {object} contact The currently iterated contact
-     * @returns A boolean value if the contact's name contains the text inserted by the user in the "search" field
+     * @returns {boolean} A boolean value if the contact's name contains the text inserted by the user in the "search" field
      */
     searchContacts(contact) {
       if (this.searchQuery.trim() == '') {
@@ -496,7 +508,7 @@ createApp({
     /**
      * Returns a boolean value to check if the user is not searching for a contact and the iterated contact still has messages in the chat with the user
      * @param {object} contact The currently iterated contact
-     * @returns A boolean value to che if the iterated contact still has messages in the chat
+     * @returns {boolean} A boolean value to che if the iterated contact still has messages in the chat
      */
     hasMessages(contact) {
       return contact.visible === true && this.searchQuery.trim() === '';
