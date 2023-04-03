@@ -233,10 +233,9 @@
                   <i v-if="activeContact >= 0" class="fa-regular fa-face-smile icon_color fa-lg"></i>
                   <div v-if="activeContact >= 0" class="position-relative">
                     <input type="text" class="text_dark" name="newMessage" id="newMessage" placeholder="Write a new message" v-model.trim="newMessage" @keydown.enter="sendNewMessage()">
-                    <i v-show="newMessage.trim() != ''" class="fa-solid fa-minus icon_color"></i>
-                    <i v-show="newMessage.trim() != ''" @click="sendNewMessage()" class="fa-solid fa-paper-plane fa-fw icon_color"></i>
                   </div>
-                  <i v-if="activeContact >= 0" class="fa-solid fa-microphone icon_color fa-lg"></i>
+                  <i v-if="activeContact >= 0 && newMessage.trim() == ''" class="fa-solid fa-microphone fa-lg icon_color"></i>
+                  <i v-else-if="newMessage.trim() != ''" @click="sendNewMessage()" class="fa-solid fa-paper-plane fa-lg icon_color"></i>
                 </div>
                 <!-- /#bottom_right -->
 

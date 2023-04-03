@@ -39,7 +39,7 @@ body {
 #header_right i,
 #right_main_content .message .fa-chevron-down,
 #right_main_content .message .delete_message_dropdown > span,
-#bottom_right i:not(.fa-minus) {
+#bottom_right i {
   cursor: pointer;
 }
 
@@ -178,6 +178,7 @@ body {
 #contacts_list > li {
   height: 85px;
   overflow: hidden;
+  border-bottom: 1px solid var(--bzap_active_contact);
 }
 
 #contacts_list > li > * {
@@ -336,19 +337,8 @@ body {
   color: var(--bzap_icon);
 }
 
-#bottom_right .fa-minus {
-  position: absolute;
-  top: 50%;
-  right: 38px;
-  transform: rotate(90deg) scaleY(0.7) scaleX(1.4) translate(-35%, -50%);
-  transform-origin: 50% 50%;
-}
-
-#bottom_right .fa-paper-plane {
-  position: absolute;
-  top: 50%;
-  right: 5px;
-  transform: translate(-30%, -50%);
+#bottom_right i {
+  width: 20px;
 }
 
 /* #endregion Right section */
