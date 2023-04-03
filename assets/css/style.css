@@ -79,26 +79,27 @@ body {
   overflow: hidden;
 }
 
+.hidden {
+  display: none;
+}
+
 /* #endregion Utility */
 
 /* #region App */
 
-#left_section {
-  width: 30%;
-  min-width: 280px;
-  height: 100%;
-  overflow: hidden;
-}
-
+#left_section,
 #right_section {
-  flex-grow: 1;
-  min-width: 358px;
+  width: 100%;
   height: 100%;
-  border-left: 1px solid var(--bzap_bg_neutral);
 }
 
-.top_section {
+.left_top_section {
   height: 70px;
+  background-color: var(--bzap_headers_overlays);
+}
+
+.right_top_section {
+  height: 150px;
   background-color: var(--bzap_headers_overlays);
 }
 
@@ -225,8 +226,8 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   border-radius: 12px;
-  padding: 2rem;
-  font-size: 1.5rem;
+  padding: 1rem 2rem;
+  font-size: 1.25rem;
   font-weight: 500;
   color: var(--bzap_chat_bg);
   background-color: var(--bzap_no_active_contact_bg);
@@ -238,24 +239,28 @@ body {
 
 #right_main_content {
   position: relative;
-  height: calc(100% - 140px);
+  height: calc(100% - 220px);
   background: var(--bzap_chat_bg) url(./../img/chat_bg.png);
   background-blend-mode: overlay;
   overflow-y: auto;
   overflow-x: hidden;
 }
 
+#header_right .dropdown {
+  min-width: max-content;
+}
+
 #right_main_content .message {
   flex-basis: 62px;
   flex-shrink: 0;
-  padding: 6px 5%;
+  padding: 6px 0;
 }
 
 #right_main_content .sent_message,
 #right_main_content .received_message {
   display: flex;
   align-items: center;
-  width: 45%;
+  width: 90%;
   min-height: 50px;
   word-break: break-all;
   padding: 0 0.25rem 0 1rem;
@@ -283,7 +288,6 @@ body {
 #right_main_content .favourite .received_message {
   margin: 0;
 }
-
 
 .message .right_message_section {
   min-width: 50px;
@@ -315,10 +319,6 @@ body {
   box-shadow: -2px 2px 10px -4px var(--bzap_icon);
   background-color: var(--bzap_list_and_messages_bg);
   font-size: 0.875rem;
-}
-
-#header_right .dropdown {
-  min-width: max-content;
 }
 
 #bottom_right {
@@ -399,3 +399,50 @@ body {
 }
 
 /* #endregion New Contact Popup */
+
+/* #region Media queries */
+
+@media screen and (min-width: 768px) {
+
+  #left_section {
+    width: 30%;
+    min-width: 280px;
+    overflow: hidden;
+  }
+  
+  #right_section {
+    width: unset;
+    flex-grow: 1;
+    min-width: 360px;
+    border-left: 1px solid var(--bzap_bg_neutral);
+  }
+
+  .hidden {
+    display: block;
+  }
+
+  .right_top_section {
+    height: 70px;
+  }
+
+  #right_main_content {
+    height: calc(100% - 140px);
+  }
+
+  #right_main_content .message {
+    padding: 6px 5%;
+  }
+  
+  #right_main_content .sent_message,
+  #right_main_content .received_message {
+    width: 45%;
+  }
+
+  .no_active_contact {
+    padding: 2rem;
+    font-size: 1.5rem;
+  }
+  
+}
+
+/* #endregion Media queries */

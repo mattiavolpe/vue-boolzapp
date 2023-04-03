@@ -5,6 +5,8 @@ As the title says, this is a WhatsApp Web clone made with HTML, CSS and JavaScri
 
 ## Included features:
 Still a work in progress, but the following features are already included:
+- **Responsive design**
+---
 - **Welcome page** with no open chats.
 ---
 - **Dark / Light mode** toggler.
