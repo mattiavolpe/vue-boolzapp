@@ -83,6 +83,16 @@ body {
   display: none;
 }
 
+.popup_w_0 {
+  width: 0;
+  overflow: hidden;
+}
+
+.popup_w_50 {
+  width: 50%;
+  min-width: 248px;
+}
+
 /* #endregion Utility */
 
 /* #region App */
@@ -358,8 +368,7 @@ body {
   top: 50%;
   right: 0;
   transform: translate(105%, -50%);
-  width: 50%;
-  min-width: 248px;
+  /* width: 50%; */
   border-top-left-radius: 12px;
   border-bottom-left-radius: 12px;
   background-color: var(--bzap_sent);
