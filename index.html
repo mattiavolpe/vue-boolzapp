@@ -104,7 +104,7 @@
 
                   <li v-for="(contact, index) in orderedContacts" class="contact justify-content-between align-items-center px-3" :class="searchContacts(contact) || hasMessages(contact) ? 'd-flex' : 'd-none', activeContact === index ? 'active' : ''" @click="activeContact = index, searchQuery = '', newMessage = ''">
                       <div class="left_contact_section d-flex align-items-start">
-                        <img v-if="contact.avatar != undefined && contact.avatar.trim() != ''" width="60" class="rounded-circle me-3" :src="`./assets/${contact.avatar.slice(2, contact.avatar.length - 4)}.jpg`" :alt="`${contact.name} image`">
+                        <img v-if="contact.avatar != undefined && contact.avatar.trim() != ''" width="60" class="rounded-circle me-3" :src="contact.avatar.includes('http') ? contact.avatar :`./assets/${contact.avatar.slice(2, contact.avatar.length - 4)}.jpg`" :alt="`${contact.name} image`">
                         <div v-else class="no_avatar me-3">{{findInitials(contact)}}</div>
                         <div>
                           <h6 class="m-0">{{contact.name}}</h6>
@@ -127,7 +127,7 @@
 
                 <div id="header_right" class="right_top_section d-flex justify-content-between align-items-center px-3">
                   <div v-if="activeContact >= 0" class="d-flex align-items-center">
-                    <img v-if="orderedContacts[activeContact].avatar != undefined && orderedContacts[activeContact].avatar.trim() != ''" width="60" class="rounded-circle me-3" :src="`./assets/${orderedContacts[activeContact].avatar.slice(2, orderedContacts[activeContact].avatar.length - 4)}.jpg`" :alt="`${orderedContacts[activeContact].name} image`">
+                    <img v-if="orderedContacts[activeContact].avatar != undefined && orderedContacts[activeContact].avatar.trim() != ''" width="60" class="rounded-circle me-3" :src="orderedContacts[activeContact].avatar.includes('http') ? orderedContacts[activeContact].avatar :`./assets/${orderedContacts[activeContact].avatar.slice(2, orderedContacts[activeContact].avatar.length - 4)}.jpg`" :alt="`${orderedContacts[activeContact].name} image`">
                     <div v-else class="no_avatar me-3">{{findInitials(orderedContacts[activeContact])}}</div>
                     <div>
                       <h5 class="m-0">{{orderedContacts[activeContact].name}}</h5>
