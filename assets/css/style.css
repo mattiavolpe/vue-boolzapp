@@ -337,7 +337,7 @@ body {
   border-radius: 6px;
   border: none;
   color: var(--bzap_icon);
-  padding: 0 40px 0 12px;
+  padding: 0 12px;
   background-color: var(--bzap_list_and_messages_bg);
 }
 
