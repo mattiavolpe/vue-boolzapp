@@ -18,7 +18,7 @@ Still a work in progress, but the following features are already included:
 ---
 - **Favourite messages add / remove**.
 - If you click on the Favourite messages tab but there are **no favourite messages**, an **informative page** is displayed as well.
-- **Favourite messages** can be **removed** from the **chat window** or from the **Favourite messages window** as well.
+- **Favourite messages** can be **removed** from the **chat window** or from the **Favourite messages window**, and the **"Add to favourites"** / **"Remove from favourites"** message will **toggle** as well.
 - **Favourite messages** also show, for each message, the **name** of the contact they come from / have been send to.
 ---
 - **Delete messages**.

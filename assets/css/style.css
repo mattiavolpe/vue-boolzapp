@@ -37,8 +37,9 @@ body {
 #favourite_messages,
 #contacts_list > li,
 #header_right i,
+#header_right ul span,
 #right_main_content .message .fa-chevron-down,
-#right_main_content .message .delete_message_dropdown > span,
+#right_main_content .message .ropdown > span,
 #bottom_right i {
   cursor: pointer;
 }
@@ -300,7 +301,7 @@ body {
   color: var(--bzap_checkmarks);
 }
 
-.delete_message_dropdown {
+.dropdown {
   position: absolute;
   right: 14px;
   top: 14px;
@@ -311,6 +312,10 @@ body {
   box-shadow: -2px 2px 10px -4px var(--bzap_icon);
   background-color: var(--bzap_list_and_messages_bg);
   font-size: 0.875rem;
+}
+
+#header_right .dropdown {
+  min-width: max-content;
 }
 
 #bottom_right {

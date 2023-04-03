@@ -28,7 +28,7 @@
     <div id="app">
 
       <!-- CONTAINER FLUID ADDED TO HAVE A FULL-WIDTH AND FULL-HEIGHT ELEMENT TO CLICK ON TO MAKE MESSAGE DELETION DROPDOWN DISAPPEAR -->
-      <div class="container-fluid p-0" @click="messageToRemove = -1">
+      <div class="container-fluid p-0" @click="messageToRemove = -1, menuOpened = false">
       
         <div class="my_container">
 
@@ -149,8 +149,14 @@
                     <li class="mx-3">
                       <i class="fa-solid fa-paperclip fa-lg"></i>
                     </li>
-                    <li>
-                      <i class="fa-solid fa-ellipsis-vertical fa-lg"></i>
+                    <li class="position-relative">
+                      <i class="fa-solid fa-ellipsis-vertical fa-lg" @click.stop="menuOpened = !menuOpened"></i>
+                      <div class="dropdown icon_color" :class="{'d-none': menuOpened == false}, {'d-flex flex-column align-items-end': menuOpened == true}">
+                        <span @click.stop="deleteAllMessages(activeContact)">
+                          <i class="fa-regular fa-trash-can fa-lg icon_color"></i>
+                          Delete all messages
+                        </span>
+                      </div>
                     </li>
                     <li class="ms-3" @click="activeContact = -2, newMessage = ''">
                       <i class="fa-solid fa-xmark fa-lg"></i>
@@ -165,15 +171,15 @@
                     <div class="d-flex justify-content-between" :class="message.status === 'sent' ? 'sent_message' : 'received_message'">
                       <span class="text">{{message.message}}</span>
                       <div class="right_message_section d-flex flex-column justify-content-between align-self-stretch">
-                        <span @click.stop="messageToRemove = index" class="text-end">
-                          <i class="fa-solid fa-chevron-down fa-fw text-end" @click="checkIfRemovedFromSavedMessages(message)"></i>
+                        <span class="text-end">
+                          <i class="fa-solid fa-chevron-down fa-fw text-end" @click.stop="checkIfRemovedFromSavedMessages(message), messageToRemove == -1 ? messageToRemove = index : messageToRemove = -1"></i>
                         </span>
                         <span class="message_time text-end align-self-end">{{message.date.slice(11, 16)}}
                             <i v-if="message.status === 'sent'" class="fa-solid fa-check fa-fw"></i>
                             <i v-if="message.status === 'sent'" class="fa-solid fa-check fa-fw"></i>
                         </span>
                       </div>
-                      <div class="delete_message_dropdown icon_color" :class="{'d-none': index != messageToRemove}, {'d-flex flex-column align-items-end': index == messageToRemove}">
+                      <div class="dropdown icon_color" :class="{'d-none': index != messageToRemove}, {'d-flex flex-column align-items-end': index == messageToRemove}">
                         <span v-if="message.saved != true" @click="toggleFavourites(message)" class="mb-2">
                           <i class="fa-regular fa-square-plus fa-lg icon_color"></i>
                           Add to favourites
@@ -198,15 +204,15 @@
                     <div class="d-flex justify-content-between" :class="message.status === 'sent' ? 'sent_message' : 'received_message'">
                       <span class="text">{{message.message}}</span>
                       <div class="right_message_section d-flex flex-column justify-content-between align-self-stretch">
-                        <span @click.stop="messageToRemove = index" class="text-end">
-                          <i class="fa-solid fa-chevron-down fa-fw text-end"></i>
+                        <span class="text-end">
+                          <i @click.stop="messageToRemove = index" class="fa-solid fa-chevron-down fa-fw text-end"></i>
                         </span>
                         <span class="message_time text-end align-self-end">{{message.date.slice(11, 16)}}
                             <i v-if="message.status === 'sent'" class="fa-solid fa-check fa-fw"></i>
                             <i v-if="message.status === 'sent'" class="fa-solid fa-check fa-fw"></i>
                         </span>
                       </div>
-                      <div class="delete_message_dropdown icon_color" :class="{'d-none': index != messageToRemove}, {'d-flex flex-column align-items-end': index == messageToRemove}">
+                      <div class="dropdown icon_color" :class="{'d-none': index != messageToRemove}, {'d-flex flex-column align-items-end': index == messageToRemove}">
                         <span @click="toggleFavourites(message)">
                           <i class="fa-regular fa-square-minus fa-lg icon_color"></i>
                           Remove from favourites

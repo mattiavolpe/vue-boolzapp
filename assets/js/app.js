@@ -22,7 +22,7 @@ Visualizzazione ora e ultimo messaggio inviato/ricevuto nella lista dei contatti
 */
 
 const { createApp } = Vue;
-  
+
 createApp({
   data() {
     return {
@@ -200,7 +200,8 @@ createApp({
       savedMessageId: -1,
       randomAnswers: [
         "Interessante, dimmi di più", "Capisco il tuo punto di vista", "Effettivamente, non ci avevo pensato", "Credo che tu abbia ragione", "Beh, non è una cattiva idea", "Sì, esatto, esattamente quello che intendevo", "Sono d'accordo con te al 100%", "È una situazione complicata, ci vuole un po' di tempo per pensarci", "Hmm, non so, dovrei informarmi di più", "Mi sembra una soluzione valida", "Certo, va bene per me", "Non vedo l'ora di scoprirlo", "Mi stai facendo ridere", "Ho bisogno di rifletterci ancora un po'", "Sì, mi sembra una buona idea", "È un punto di vista interessante, ma personalmente la vedo diversamente", "Grazie per la tua opinione, l'ho apprezzata molto", "Non c'è problema", "Certo, fammi sapere quando ci sei", "Ti ringrazio per avermene parlato, apprezzo la tua sincerità",
-      ]
+      ],
+      menuOpened: false,
     }
   },
   methods: {
@@ -450,7 +451,24 @@ createApp({
       this.activeContact = this.orderedContacts.findIndex(contact => contact.lastUser);
 
       delete this.orderedContacts[this.activeContact].lastUser;
-      this.messageToRemove = -1
+      this.messageToRemove = -1;
+    },
+
+    deleteAllMessages(activeContact) {
+      this.orderedContacts[activeContact].messages.forEach(message => {
+        if (message.saved == true) {
+          const index = this.favouritesMessages.findIndex(favMessage => favMessage.savedId == message.savedId);
+          this.favouritesMessages.splice(index, 1);
+        }
+      })
+      this.orderedContacts[activeContact].messages = [];
+      this.orderedContacts[activeContact].lastUser = true;
+      this.orderedContacts[activeContact].visible = false;
+      this.orderContacts();
+      this.activeContact = this.orderedContacts.findIndex(contact => contact.lastUser);
+
+      delete this.orderedContacts[this.activeContact].lastUser;
+      this.menuOpened = false;
     },
 
     /**
