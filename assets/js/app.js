@@ -205,6 +205,7 @@ createApp({
       newContactWindow: false, // A boolean to check if the new contact popup window is open or not
       newContactName: "",
       newContactImage: "",
+      lastSeen: "Last seen", // A string that is used to compose the "Last seen" sentence depending on the state of the conversation
     }
   },
   methods: {
@@ -288,6 +289,9 @@ createApp({
      * @returns {string} A string containing the date of the latest message in the chat between the user and the active contact
      */
     provideLastMessageDate() {
+      if (this.lastSeen == "Is typing..." || this.lastSeen == "Online") {
+        return "";
+      }
       const actualContact = this.orderedContacts[this.activeContact];
       let timeString = actualContact.messages[actualContact.messages.length - 1].date.slice(0, 10);
       const today = new Date().toLocaleDateString('it-IT', {
@@ -304,6 +308,9 @@ createApp({
      * @returns {string} A string containing the time of the latest message in the chat between the user and the active contact
      */
     provideLastMessageTime() {
+      if (this.lastSeen == "Is typing..." || this.lastSeen == "Online") {
+        return "";
+      }
       const actualContact = this.orderedContacts[this.activeContact];
       const timeString = actualContact.messages[actualContact.messages.length - 1].date.slice(11, 16);
       return timeString;
@@ -384,12 +391,14 @@ createApp({
      * @param {number} contactId The ID of the contact that has received a new message and has to answer
      */
     sendAnswer(contactId) {
+      this.lastSeen = "Is typing...";
       setTimeout(() => {
         const newAnswer = {
           date: this.getFormattedCurrentDateAndTime(),
           message: this.getRandomAnwer(this.randomAnswers.length - 1),
           status: 'received'
         }
+        this.lastSeen = "Online"
 
         // Sends the answer to the contact with the provided ID, so the answer is delivered to the right contact also if the user clicks on another contact in the 1 second waiting time
         this.orderedContacts[this.orderedContacts.findIndex(contact => contact.id == contactId)].messages.push(newAnswer);
@@ -397,7 +406,22 @@ createApp({
         setTimeout(() => {
           this.scrollTo("bottom");
         }, 1); // 1ms needed to make the scroll to bottom work as expected
+
+        setTimeout(() => {
+          this.lastSeen = "Last seen";
+        }, 2500);
       }, 1000);
+    },
+
+    /**
+     * Utility function to correctly format the "Last seen" message depending if the contact is writing, is online or not
+     * @returns {string} Returns the string "at" or not, depending on the lastSeen content
+     */
+    appendAt() {
+      if (this.lastSeen != "Last seen") {
+        return "";
+      }
+      return "at";
     },
 
     /**
@@ -457,6 +481,10 @@ createApp({
       this.messageToRemove = -1;
     },
 
+    /**
+     * Removes all the messages between the user and the active contact
+     * @param {number} activeContact The index of the active contact
+     */
     deleteAllMessages(activeContact) {
       this.orderedContacts[activeContact].messages.forEach(message => {
         if (message.saved == true) {
@@ -598,5 +626,5 @@ createApp({
   created() {
     this.orderContacts();
     this.orderedContacts.forEach(contact => contact.id = ++this.counter);
-  }
+  },
 }).mount('#app');

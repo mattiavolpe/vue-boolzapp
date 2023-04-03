@@ -33,5 +33,6 @@ Still a work in progress, but the following features are already included:
 - You can't send **empty messages** of course.
 ---
 - Whenever a **new message** is sent / received, the chat window will **automatically scroll** to the newest message.
+- When you **send a new message** the **last seen** sentence will **update** with **"Is typing"**, **"Online"** and finally **back to the time of the last message**
 ---
 - Each contact will generate a **random answer** once he receives a new message from the user

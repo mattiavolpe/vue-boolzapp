@@ -41,7 +41,9 @@ body {
 #right_main_content .message .fa-chevron-down,
 #right_main_content .message .ropdown > span,
 #bottom_right i,
-.dropdown span {
+.dropdown span,
+#newContactPopup i,
+#newContactPopup button {
   cursor: pointer;
 }
 

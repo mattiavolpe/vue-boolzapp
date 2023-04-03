@@ -129,9 +129,14 @@
                   <div v-if="activeContact >= 0" class="d-flex align-items-center">
                     <img v-if="orderedContacts[activeContact].avatar != undefined && orderedContacts[activeContact].avatar.trim() != ''" width="60" class="rounded-circle me-3" :src="`./assets/${orderedContacts[activeContact].avatar.slice(2, orderedContacts[activeContact].avatar.length - 4)}.jpg`" :alt="`${orderedContacts[activeContact].name} image`">
                     <div v-else class="no_avatar me-3">{{findInitials(orderedContacts[activeContact])}}</div>
-                    <div>
+                    <!-- <div>
                       <h5 class="m-0">{{orderedContacts[activeContact].name}}</h5>
                       <span v-if="orderedContacts[activeContact].messages.length > 0" class="m-0 icon_color">Last seen {{provideLastMessageDate()}} at {{provideLastMessageTime()}}</span>
+                      <span v-else class="m-0 icon_color">Last seen today at {{getCurrentTime()}}</span>
+                    </div> -->
+                    <div>
+                      <h5 class="m-0">{{orderedContacts[activeContact].name}}</h5>
+                      <span v-if="orderedContacts[activeContact].messages.length > 0" class="m-0 icon_color">{{`${lastSeen} ${provideLastMessageDate()} ${appendAt()} ${provideLastMessageTime()}`}}</span>
                       <span v-else class="m-0 icon_color">Last seen today at {{getCurrentTime()}}</span>
                     </div>
                   </div>
@@ -262,6 +267,8 @@
                 <i class="fa-solid fa-xmark fa-lg icon_color" @click="newContactWindow = !newContactWindow, newContactName = '', newContactImage = ''"></i>
               </div>
               <!-- /#newContactPopup -->
+
+              
 
         </div>
         <!-- /.container -->
