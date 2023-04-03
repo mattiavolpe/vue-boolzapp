@@ -249,7 +249,7 @@
               </div>
               <!-- /#right_section -->
 
-              <div id="newContactPopup" class="d-flex flex-column align-items-center py-5 text-center" :class="newContactWindow ? 'popup_w_50 visible' : 'popup_w_0'" @click.stop="">
+              <div id="newContactPopup" class="d-flex flex-column align-items-center py-5 text-center" :class="newContactWindow ? 'popup_w_50' : 'popup_w_0'" @click.stop="">
                 <h5 class="pb-3 m-0">New contact</h5>
                 <h6>Insert the name for the new contact</h6>
                 <input v-model.trim="newContactName" type="text" class="border-0" @keydown.enter="addNewContact()">

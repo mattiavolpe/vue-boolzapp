@@ -376,7 +376,7 @@ body {
   transition: transform 0.8s;
 }
 
-#newContactPopup.visible {
+#newContactPopup.popup_w_50 {
   transform: translate(0, -50%);
 }
 
