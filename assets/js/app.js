@@ -279,7 +279,7 @@ createApp({
       const nameParts = contact.name.split(" ");
       let initials = "";
       nameParts.forEach(part => {
-        initials += part[0];
+        initials += part[0].toUpperCase();
       });
       return initials;
     },
