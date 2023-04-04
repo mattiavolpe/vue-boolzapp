@@ -395,7 +395,7 @@ createApp({
       setTimeout(() => {
         const newAnswer = {
           date: this.getFormattedCurrentDateAndTime(),
-          message: this.getRandomAnwer(this.randomAnswers.length - 1),
+          message: this.getRandomAnswer(this.randomAnswers.length - 1),
           status: 'received'
         }
         this.lastSeen = "Online"
@@ -410,7 +410,7 @@ createApp({
         setTimeout(() => {
           this.lastSeen = "Last seen";
         }, 2500);
-      }, 1000);
+      }, 1500);
     },
 
     /**
@@ -429,7 +429,7 @@ createApp({
      * @param {number} max The index of the last element in the randomAnswers array
      * @returns {number} The index of a random answer
      */
-    getRandomAnwer(max) {
+    getRandomAnswer(max) {
       return this.randomAnswers[Math.floor(Math.random() * (max + 1))];
     },
 
