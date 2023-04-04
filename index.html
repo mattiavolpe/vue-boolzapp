@@ -32,7 +32,7 @@
       
         <div class="my_container">
 
-              <!-- displayed by default on screens narrower than 768px -->
+              <!-- Displayed by default on screens narrower than 768px -->
               <div id="left_section" :class="activeContact >= -1 ? 'hidden' : ''">
                 
                 <div id="header_left" class="left_top_section d-flex justify-content-between align-items-center px-3">
@@ -46,6 +46,8 @@
                     <li>
                       <i class="fa-solid fa-circle-notch fa-lg"></i>
                     </li>
+
+                    <!-- Toggles the new contact popup window -->
                     <li class="mx-3">
                       <i @click.stop="newContactWindow = !newContactWindow, newContactName = '', newContactImage = ''" class="fa-solid fa-user-plus fa-lg"></i>
                     </li>
@@ -89,6 +91,7 @@
                 </div>
                 <!-- /#search_contact -->
 
+                <!-- -1 is the value of the "favourite messages" window -->
                 <div id="favourite_messages" class="d-flex align-items-center px-3" @click="activeContact = -1">
 
                   <div class="favourite_messages_icon_container me-3">
@@ -103,8 +106,11 @@
 
                 <ul id="contacts_list" class="m-0 p-0 list-unstyled">
 
+                  <!-- Displayed if contact name includes the search box input or if a contact still has messages -->
                   <li v-for="(contact, index) in orderedContacts" class="contact justify-content-between align-items-center px-3" :class="searchContacts(contact) || hasMessages(contact) ? 'd-flex' : 'd-none', activeContact === index ? 'active' : ''" @click="activeContact = index, searchQuery = '', newMessage = ''">
                       <div class="left_contact_section d-flex align-items-start">
+
+                        <!-- Changes output if a contact has an avatar or not -->
                         <img v-if="contact.avatar != undefined && contact.avatar.trim() != ''" width="60" class="rounded-circle me-3" :src="contact.avatar.includes('http') ? contact.avatar :`./assets/${contact.avatar.slice(2, contact.avatar.length - 4)}.jpg`" :alt="`${contact.name} image`">
                         <div v-else class="no_avatar me-3">{{findInitials(contact)}}</div>
                         <div>
@@ -124,18 +130,27 @@
               </div>
               <!-- /#left_section -->
 
+              <!-- Hidden by default on screens narrower than 768px -->
               <div id="right_section" :class="activeContact < -1 ? 'hidden' : ''">
 
                 <div id="header_right" class="right_top_section d-flex justify-content-between align-items-center px-3">
+
+                  <!-- Displayed if a contact is selected -->
                   <div v-if="activeContact >= 0" class="d-flex align-items-center">
+
+                    <!-- Changes output if a contact has an avatar or not -->
                     <img v-if="orderedContacts[activeContact].avatar != undefined && orderedContacts[activeContact].avatar.trim() != ''" width="60" class="rounded-circle me-3" :src="orderedContacts[activeContact].avatar.includes('http') ? orderedContacts[activeContact].avatar :`./assets/${orderedContacts[activeContact].avatar.slice(2, orderedContacts[activeContact].avatar.length - 4)}.jpg`" :alt="`${orderedContacts[activeContact].name} image`">
                     <div v-else class="no_avatar me-3">{{findInitials(orderedContacts[activeContact])}}</div>
                     <div>
                       <h5 class="m-0">{{orderedContacts[activeContact].name}}</h5>
+
+                      <!-- Shows the last seen message based on left messages in the chat, on typing status, etc -->
                       <span v-if="orderedContacts[activeContact].messages.length > 0" class="m-0 icon_color">{{`${lastSeen} ${provideLastMessageDate()} ${appendAt()} ${provideLastMessageTime()}`}}</span>
                       <span v-else class="m-0 icon_color">Last seen today at {{getCurrentTime()}}</span>
                     </div>
                   </div>
+
+                  <!-- Displayed if the "favourite messages" tab is selected -->
                   <div v-else-if="activeContact == -1" class="favourite_messages_header d-flex align-items-center justify-content-between px-3 flex-grow-1" @click="activeContact = -1">
                     <div class="left_favourite_messages d-flex align-items-center">
                       <i class="fa-solid fa-star fa-2x me-3"></i>
@@ -144,6 +159,7 @@
                     <i class="fa-solid fa-xmark fa-lg ms-3" @click.stop="activeContact = -2"></i>
                   </div>
 
+                  <!-- Displayed if a contact is selected or if there's at least one favourite message -->
                   <ul v-if="activeContact >= 0 || (favouritesMessages.length > 0 && activeContact == -1)" class="d-flex align-items-center list-unstyled m-0 icon_color">
                     <li>
                       <i class="fa-solid fa-magnifying-glass fa-lg" :class="activeContact >= 0 ? 'hidden' : ''"></i>
@@ -169,6 +185,7 @@
 
                 <main id="right_main_content" class="px-5 py-3 d-flex flex-column flex-shrink-0">
 
+                  <!-- Displayed if a contact is selected -->
                   <div v-if="activeContact >= 0" class="message" v-for="(message, index) in orderedContacts[activeContact].messages">
                     <div class="d-flex justify-content-between" :class="message.status === 'sent' ? 'sent_message' : 'received_message'">
                       <span class="text">{{message.message}}</span>
@@ -199,6 +216,7 @@
                   </div>
                   <!-- /.message -->
 
+                  <!-- Displayed if there's at least one favourite message -->
                   <div v-else-if="activeContact == -1 && favouritesMessages.length > 0" class="favourite message d-flex justify-content-between align-items-center" v-for="(message, index) in favouritesMessages">
                     <h6 class="m-0">
                       {{message.status == 'received' ? `Message received from ${message.contact}` : `Messange sent to ${message.contact}`}}
@@ -223,12 +241,14 @@
                     </div>
                   </div>
 
+                  <!-- Displayed if the "favourite messages" tab is selected but there are not favourite messages -->
                   <div v-else-if="activeContact == -1 && favouritesMessages.length == 0" class="no_active_contact text-center">
                     <i class="d-block fa-brands fa-whatsapp fa-4x"></i>
                     You have no favourite messages.
                     Select a contact from the list on the left to see the chat
                   </div>
 
+                  <!-- Displayed by default -->
                   <div v-else class="no_active_contact text-center">
                     <i class="d-block fa-brands fa-whatsapp fa-4x"></i>
                     Select a contact from the list on the left to see the chat
@@ -250,6 +270,7 @@
               </div>
               <!-- /#right_section -->
 
+              <!-- If the new contact window is open by the user, than will show, otherwise will hide by setting it's width to 0, in order to be unreachable by tabbing but still preserving the sliding in transition -->
               <div id="newContactPopup" class="d-flex flex-column align-items-center py-5 text-center" :class="newContactWindow ? 'popup_w_50' : 'popup_w_0'" @click.stop="">
                 <h5 class="pb-3 m-0">New contact</h5>
                 <h6>Insert the name for the new contact</h6>
@@ -264,8 +285,6 @@
                 <i class="fa-solid fa-xmark fa-lg icon_color" @click="newContactWindow = !newContactWindow, newContactName = '', newContactImage = ''"></i>
               </div>
               <!-- /#newContactPopup -->
-
-              
 
         </div>
         <!-- /.container -->
