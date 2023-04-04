@@ -37,15 +37,44 @@ body {
 #favourite_messages,
 #contacts_list > li,
 #header_right i,
-#header_right ul span,
 #right_main_content .message .fa-chevron-down,
-#right_main_content .message .ropdown > span,
 #bottom_right i,
 .dropdown span,
+.dropdown span i,
 #newContactPopup i,
 #newContactPopup button {
   cursor: pointer;
+  transition: all 0.3s;
 }
+
+.dropdown span:hover,
+.dropdown span:hover i {
+  color: var(--bzap_main_text);
+  transform: scale(1.05);
+}
+
+#header_left i:hover,
+#search_contact label > i:hover,
+#header_right i:hover,
+#right_main_content .message .fa-chevron-down:hover,
+#bottom_right i:hover,
+#newContactPopup i:hover {
+  color: var(--bzap_main_text);
+  transform: scale(1.2);
+}
+
+#favourite_messages:hover {
+  filter: brightness(0.8);
+}
+
+#contacts_list > li:hover {
+  background-color: var(--bzap_active_contact);
+}
+
+#contacts_list > li.active:hover {
+  filter: brightness(0.8);
+}
+
 
 /* #endregion Common */
 
@@ -79,10 +108,12 @@ body {
   overflow: hidden;
 }
 
+/* Utility class used to hide the left_section or the right_section on screens narrower than 768px */
 .hidden {
   display: none;
 }
 
+/* popup_w_0 and popup_w_50 are 2 utility classes to make the "new contact popup" unreachable by tabbing but still preserving the sliding transition, that would be impossibile with display: none */
 .popup_w_0 {
   width: 0;
   overflow: hidden;
@@ -95,7 +126,7 @@ body {
 
 /* #endregion Utility */
 
-/* #region App */
+/* #region App general layout */
 
 #left_section,
 #right_section {
@@ -113,7 +144,7 @@ body {
   background-color: var(--bzap_headers_overlays);
 }
 
-/* #endregion App */
+/* #endregion App general layout */
 
 /* #region Left section */
 

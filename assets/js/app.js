@@ -27,8 +27,8 @@ createApp({
   data() {
     return {
       darkMode: false,
-      counter: -1, // ID used to track which contact has to answer to a new message, since activeContact will change if the user selects another contact before the 1 second of waiting time
-      activeContact: -2,
+      counter: -1, // Is used to assign a value to the ID property that is used to track which contact has to answer to a new message, since activeContact will change if the user selects another contact before the 1 second of waiting time
+      activeContact: -2, // -2 is nothing selected, -1 is "Favourite messages" tab and >= 0 is a contact
       newMessage: "",
       searchQuery: "",
       messageToRemove: -1, // The index of the message to remove
