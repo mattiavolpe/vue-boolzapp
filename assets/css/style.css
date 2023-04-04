@@ -75,7 +75,6 @@ body {
   filter: brightness(0.8);
 }
 
-
 /* #endregion Common */
 
 /* #region Utility */
@@ -363,6 +362,7 @@ body {
 }
 
 #bottom_right {
+  position: relative;
   height: 70px;
   background-color: var(--bzap_headers_overlays);
 }
@@ -388,6 +388,16 @@ body {
 
 #bottom_right i {
   width: 20px;
+}
+
+#bottom_right > .emoji_wrapper {
+  position: absolute;
+  top: -6px;
+  left: 6px;
+  transform: translate(0, -100%);
+  width: 50%;
+  min-width: 240px;
+  height: 300px;
 }
 
 /* #endregion Right section */
@@ -483,6 +493,19 @@ body {
     font-size: 1.5rem;
   }
   
+}
+
+@media screen and (min-width: 1200px) {
+
+  .v3-emoji-picker .v3-body .v3-body-inner .v3-group .v3-emojis button {
+    flex-basis: 10%;
+    max-width: 10%;
+    flex-grow: 1;
+    padding: 0;
+    font-size: 22px;
+    position: relative;
+  }
+
 }
 
 /* #endregion Media queries */

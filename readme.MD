@@ -1,7 +1,5 @@
 # WhatsApp Web clone!
-
 As the title says, this is a WhatsApp Web clone made with HTML, CSS and JavaScript. The frameworks Bootstrap and Vue.js are used too.
-
 
 ## Included features:
 Still a work in progress, but the following features are already included:
@@ -33,6 +31,7 @@ Still a work in progress, but the following features are already included:
 ---
 - You can **write new messages** as well: they will be **delivered** to the contact and **update** the "last seen" sentence too.
 - You can't send **empty messages** of course.
+- You can insert **emoji** in your messages.
 ---
 - Whenever a **new message** is sent / received, the chat window will **automatically scroll** to the newest message.
 - When you **send a new message** the **last seen** sentence will **update** with **"Is typing"**, **"Online"** and finally **back to the time of the last message**

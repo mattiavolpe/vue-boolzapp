@@ -21,6 +21,9 @@ Cancella messaggio: cliccando sul messaggio appare un menu a tendina che permett
 Visualizzazione ora e ultimo messaggio inviato/ricevuto nella lista dei contatti
 */
 
+import Picker from './emoji-picker.js';
+console.log(Picker);
+
 const { createApp } = Vue;
 
 createApp({
@@ -206,6 +209,7 @@ createApp({
       newContactName: "",
       newContactImage: "",
       lastSeen: "Last seen", // A string that is used to compose the "Last seen" sentence depending on the state of the conversation
+      showEmoji: false,
     }
   },
   methods: {
@@ -621,10 +625,15 @@ createApp({
       this.newContactImage = "";
       this.newContactWindow = false;
       this.activeContact = this.orderedContacts.length - 1;
-    }
+    },
+
+    // Inserts emojis
+    onSelectEmoji(emoji) {
+      this.newMessage += emoji.i;
+    },
   },
   created() {
     this.orderContacts();
     this.orderedContacts.forEach(contact => contact.id = ++this.counter);
   },
-}).mount('#app');
+}).component('Picker', Picker).mount('#app');
