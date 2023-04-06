@@ -22,7 +22,6 @@ Visualizzazione ora e ultimo messaggio inviato/ricevuto nella lista dei contatti
 */
 
 import Picker from './emoji-picker.js';
-console.log(Picker);
 
 const { createApp } = Vue;
 
@@ -210,6 +209,8 @@ createApp({
       newContactImage: "",
       lastSeen: "Last seen", // A string that is used to compose the "Last seen" sentence depending on the state of the conversation
       showEmoji: false,
+      isRecording: false,
+      audioPresent: false,
     }
   },
   methods: {

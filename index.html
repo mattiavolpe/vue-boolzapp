@@ -6,8 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="./assets/js/style.css">
-
     <!-- GOOGLE FONTS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,6 +16,9 @@
     
     <!-- EXTERNAL BOOTSTRAP CSS CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+    <!-- EMOJI PICKER CSS -->
+    <link rel="stylesheet" href="./assets/js/style.css">
 
     <!-- EXTERNAL PERSONAL CSS -->
     <link rel="stylesheet" href="./assets/css/style.css">
@@ -30,7 +31,7 @@
     <div id="app">
 
       <!-- CONTAINER FLUID ADDED TO HAVE A FULL-WIDTH AND FULL-HEIGHT ELEMENT TO CLICK ON TO MAKE DROPDOWNS DISAPPEAR -->
-      <div class="container-fluid p-0" @click="messageToRemove = -1, menuOpened = false, newContactWindow = false, showEmoji= false">
+      <div class="container-fluid p-0" @click="messageToRemove = -1, menuOpened = false, newContactWindow = false, showEmoji= false, isRecording = false, isRecording ? cancelRecording() : ''">
       
         <div class="my_container">
 
@@ -189,8 +190,34 @@
 
                   <!-- Displayed if a contact is selected -->
                   <div v-if="activeContact >= 0" class="message" v-for="(message, index) in orderedContacts[activeContact].messages">
-                    <div class="d-flex justify-content-between" :class="message.status === 'sent' ? 'sent_message' : 'received_message'">
+                    <div v-if="message.type != 'audio'" class="d-flex justify-content-between" :class="message.status === 'sent' ? 'sent_message' : 'received_message'">
                       <span class="text">{{message.message}}</span>
+                      <div class="right_message_section d-flex flex-column justify-content-between align-self-stretch">
+                        <span class="text-end">
+                          <i class="fa-solid fa-chevron-down fa-fw text-end" @click.stop="checkIfRemovedFromSavedMessages(message), messageToRemove == index ? messageToRemove = -1 : messageToRemove = index, menuOpened = false"></i>
+                        </span>
+                        <span class="message_time text-end align-self-end">{{message.date.slice(11, 16)}}
+                            <i v-if="message.status === 'sent'" class="fa-solid fa-check fa-fw"></i>
+                            <i v-if="message.status === 'sent'" class="fa-solid fa-check fa-fw"></i>
+                        </span>
+                      </div>
+                      <div class="dropdown icon_color" :class="{'d-none': index != messageToRemove}, {'d-flex flex-column align-items-end': index == messageToRemove}">
+                        <span v-if="message.saved != true" @click="toggleFavourites(message)" class="mb-2">
+                          <i class="fa-regular fa-square-plus fa-lg icon_color"></i>
+                          Add to favourites
+                        </span>
+                        <span v-else @click="toggleFavourites(message)" class="mb-2">
+                          <i class="fa-regular fa-square-minus fa-lg icon_color"></i>
+                          Remove from favourites
+                        </span>
+                        <span @click="removeMessage(message)">
+                          <i class="fa-regular fa-trash-can fa-lg icon_color"></i>
+                          Delete message
+                        </span>
+                      </div>
+                    </div>
+                    <div v-else class="d-flex justify-content-between" :class="message.status === 'sent' ? 'sent_message' : 'received_message'">
+                      <audio controls class="audioContainer"></audio>
                       <div class="right_message_section d-flex flex-column justify-content-between align-self-stretch">
                         <span class="text-end">
                           <i class="fa-solid fa-chevron-down fa-fw text-end" @click.stop="checkIfRemovedFromSavedMessages(message), messageToRemove == index ? messageToRemove = -1 : messageToRemove = index, menuOpened = false"></i>
@@ -262,10 +289,13 @@
                 <div id="bottom_right" class="d-flex justify-content-around align-items-center px-3">
                   <i v-if="activeContact >= 0" class="fa-regular fa-face-smile icon_color fa-lg" @click.stop="showEmoji = !showEmoji"></i>
                   <div v-if="activeContact >= 0" class="position-relative">
-                    <input type="text" class="text_dark" name="newMessage" id="newMessage" placeholder="Write a new message" v-model.trim="newMessage" @keydown.enter="sendNewMessage()">
+                    <input type="text" class="text_dark" name="newMessage" id="newMessage" placeholder="Write a new message" v-model.trim="newMessage" @keydown.enter="sendNewMessage()" @keydown="newMessage.trim() != '' && audioPresent ? cancelRecording() : ''">
                   </div>
-                  <i v-if="activeContact >= 0 && newMessage.trim() == ''" class="fa-solid fa-microphone fa-lg icon_color"></i>
-                  <i v-else-if="newMessage.trim() != ''" @click="sendNewMessage()" class="fa-solid fa-paper-plane fa-lg icon_color"></i>
+
+                  <i v-if="activeContact >= 0 && newMessage.trim() == '' && !isRecording && !audioPresent" @click.stop="startRecording()" class="fa-solid fa-microphone fa-lg icon_color"></i>
+                  <i v-else-if="activeContact >= 0 && newMessage.trim() == '' && isRecording" @click.stop="stopRecording()" class="fa-solid fa-stop fa-lg icon_color"></i>
+                  <i v-else-if="newMessage.trim() != '' && !audioPresent" @click="sendNewMessage()" class="fa-solid fa-paper-plane fa-lg icon_color"></i>
+                  <i v-else-if="newMessage.trim() == '' && audioPresent" class="fa-solid fa-file-audio fa-lg icon_color" @click="sendNewMessage()"></i>
 
                   <!-- ADD EMPTY @click.stop TO ALLOW THE SELECTION OF MULTIPLE EMOJIS -->
                   <Picker @select="onSelectEmoji" class="emoji_wrapper" :class="{'d-none': !showEmoji}" @click.stop=""/>
@@ -300,7 +330,11 @@
     </div>
     <!-- /#app -->
 
+    <!-- EXTERNAL EMOJI PICKER JS -->
     <script src="./assets/js/emoji-picker.js" type="module"></script>
+
+    <!-- EXTERNAL AUDIO MESSAGES JS -->
+    <script src="./assets/js/vocalMessagesRecorder.js"></script>
 
     <!-- EXTERNAL BOOTSTRAP JS CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
