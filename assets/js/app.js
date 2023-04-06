@@ -687,7 +687,6 @@ createApp({
      */
     startRecording() {
       let audioElements = document.querySelectorAll("audio");
-      console.log(audioElements);
       audioElements.forEach(audioElement => {
         if (!audioElement.paused) {
           audioElement.pause();
