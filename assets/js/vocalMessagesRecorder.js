@@ -40,8 +40,6 @@ const vocalMessagesRecorder = {
       vocalMessagesRecorder.cancel();
     });
   },
-
-
   cancel: function () {
     vocalMessagesRecorder.mediaRecorder.stop();
     vocalMessagesRecorder.stopStream();

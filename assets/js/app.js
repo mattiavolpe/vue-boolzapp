@@ -386,9 +386,11 @@ createApp({
         // Sends the text message to the contact array of messages
         this.orderedContacts[this.activeContact].messages.push(newMessageObject);
       } else {
-        reader = new FileReader();
 
+        reader = new FileReader();
+        
         reader.onload = (e) => {
+
           base64URL = e.target.result;
 
           blobType = temporaryAudio.type.includes(";") ? temporaryAudio.type.substr(0, temporaryAudio.type.indexOf(';')) : temporaryAudio.type;
@@ -396,6 +398,7 @@ createApp({
           // Creates the object for an audio message
           newMessageObject = {
             date: this.getFormattedCurrentDateAndTime(),
+            message: "AUDIO MESSAGE",
             status: 'sent',
             otherTypeMessage: 'audio',
             src: base64URL,
@@ -415,14 +418,16 @@ createApp({
       // Sets the ID of the contact to track who has to receive the following answer
       const contactWaitingForAnswer = this.orderedContacts[this.activeContact].id;
 
-      this.orderContacts();
-      this.scrollTo("top");
       setTimeout(() => {
-        this.scrollTo("bottom");
-      }, 10); // 1ms needed to make the scroll to bottom work as expected
-      this.activeContact = 0;
-      this.newMessage = "";
-      this.audioPresent = false;
+        this.orderContacts();
+        this.scrollTo("top");
+        setTimeout(() => {
+          this.scrollTo("bottom");
+        }, 50); // 1ms needed to make the scroll to bottom work as expected
+        this.newMessage = "";
+        this.audioPresent = false;
+        this.activeContact = 0;
+      }, 100);
       this.sendAnswer(contactWaitingForAnswer);
     },
 
@@ -445,7 +450,7 @@ createApp({
 
         setTimeout(() => {
           this.scrollTo("bottom");
-        }, 10); // 1ms needed to make the scroll to bottom work as expected
+        }, 50); // 1ms needed to make the scroll to bottom work as expected
 
         setTimeout(() => {
           this.lastSeen = "Last seen";
@@ -686,6 +691,7 @@ createApp({
      * Starts a new audio recording section. If the API is not supported by the browser, alerts the user
      */
     startRecording() {
+      this.audioPresent = false;
       let audioElements = document.querySelectorAll("audio");
       audioElements.forEach(audioElement => {
         if (!audioElement.paused) {
@@ -752,6 +758,10 @@ createApp({
       this.isRecording = false;
       this.audioPresent = true;
     },
+    cancelRecording() {
+      this.stopRecording();
+      this.audioPresent = false;
+    }
   },
   created() {
     this.orderContacts();

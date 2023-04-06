@@ -31,7 +31,7 @@
     <div id="app">
 
       <!-- CONTAINER FLUID ADDED TO HAVE A FULL-WIDTH AND FULL-HEIGHT ELEMENT TO CLICK ON TO MAKE DROPDOWNS DISAPPEAR -->
-      <div class="container-fluid p-0" @click="messageToRemove = -1, menuOpened = false, newContactWindow = false, showEmoji= false, isRecording ? stopRecording() : ''">
+      <div class="container-fluid p-0" @click="messageToRemove = -1, menuOpened = false, newContactWindow = false, showEmoji= false, isRecording || audioPresent ? cancelRecording() : ''">
       
         <div class="my_container">
 
@@ -322,10 +322,11 @@
                     <input type="text" class="text_dark" name="newMessage" id="newMessage" placeholder="Write a new message" v-model.trim="newMessage" @keydown.enter="sendNewMessage()" @keydown="newMessage.trim() != '' && audioPresent ? audioPresent = false : ''">
                   </div>
 
-                  <i v-if="activeContact >= 0 && newMessage.trim() == '' && !isRecording && !audioPresent" @click.stop="startRecording()" class="fa-solid fa-microphone fa-lg icon_color"></i>
-                  <i v-else-if="activeContact >= 0 && newMessage.trim() == '' && isRecording" @click.stop="stopRecording()" class="fa-solid fa-stop fa-beat fa-lg icon_color"></i>
-                  <i v-else-if="newMessage.trim() != '' && !audioPresent" @click="sendNewMessage()" class="fa-solid fa-paper-plane fa-lg icon_color"></i>
-                  <i v-else-if="newMessage.trim() == '' && audioPresent" class="fa-solid fa-file-audio fa-beat fa-lg icon_color" @click="sendNewMessage()"></i>
+                  <i v-if="activeContact >= 0 && newMessage.trim() != '' && !audioPresent && !isRecording" class="fa-solid fa-paper-plane fa-lg icon_color" @click.stop="sendNewMessage()"></i>
+                  <i v-else-if="activeContact >= 0 && newMessage.trim() != '' && (audioPresent || isRecording)" class="fa-solid fa-paper-plane fa-lg icon_color" @click="sendNewMessage()"></i>
+                  <i v-else-if="activeContact >= 0 && newMessage.trim() == '' && !audioPresent && !isRecording" class="fa-solid fa-microphone fa-lg icon_color" @click.stop="startRecording()"></i>
+                  <i v-else-if="activeContact >= 0 && newMessage.trim() == '' && audioPresent && !isRecording" class="fa-solid fa-file-audio fa-beat fa-lg icon_color" @click.stop="sendNewMessage()"></i>
+                  <i v-else-if="activeContact >= 0 && newMessage.trim() == '' && !audioPresent && isRecording" class="fa-solid fa-stop fa-beat fa-lg icon_color" @click.stop="stopRecording()"></i>
 
                   <!-- ADD EMPTY @click.stop TO ALLOW THE SELECTION OF MULTIPLE EMOJIS -->
                   <Picker @select="onSelectEmoji" class="emoji_wrapper" :class="{'d-none': !showEmoji}" @click.stop=""/>
