@@ -336,16 +336,16 @@
               <!-- /#right_section -->
 
               <!-- If the new contact window is open by the user, than will show, otherwise will hide by setting it's width to 0, in order to be unreachable by tabbing but still preserving the sliding in transition -->
-              <div id="newContactPopup" class="d-flex flex-column align-items-center py-5 text-center" :class="newContactWindow ? 'popup_w_50' : 'popup_w_0'" @click.stop="">
-                <h5 class="pb-3 m-0">New contact</h5>
-                <h6>Insert the name for the new contact</h6>
-                <input v-model.trim="newContactName" type="text" class="border-0" @keydown.enter="addNewContact()">
-                <h6 class="mt-2">Insert the URL for the contact image (leave it blank if you don't have it)</h6>
-                <input v-model.trim="newContactImage" type="text" class="border-0" @keydown.enter="addNewContact()">
+              <div id="newContactPopup" class="d-flex flex-column align-items-center pb-3 text-center" :class="newContactWindow ? 'popup_w_50' : 'popup_w_0'" @click.stop="">
+                <h5 class="py-3 px-2 m-0">New contact</h5>
+                <h6 class="px-2 py-2 m-0">Insert the name for the new contact</h6>
+                <input v-model.trim="newContactName" type="text" class="border-0 mb-3" @keydown.enter="addNewContact()">
+                <h6 class="px-2 pb-2 m-0">Insert the URL for the contact image (leave it blank if you don't have it)</h6>
+                <input v-model.trim="newContactImage" type="text" class="border-0 mb-3" @keydown.enter="addNewContact()">
                 <div class="buttons">
-                  <button @click="addNewContact()" class="border-0 mt-3 mx-2">Add contact</button>
+                  <button @click="addNewContact()" class="border-0 mx-2">Add contact</button>
                   <button @click="newContactName = '';
-                  newContactImage = ''" class="border-0 mt-3 mx-2">Reset</button>
+                  newContactImage = ''" class="border-0 mx-2">Reset</button>
                 </div>
                 <i class="fa-solid fa-xmark fa-lg icon_color" @click="newContactWindow = !newContactWindow, newContactName = '', newContactImage = ''"></i>
               </div>
