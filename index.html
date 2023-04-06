@@ -254,7 +254,7 @@
                   <!-- Displayed if there's at least one favourite message -->
                   <div v-else-if="activeContact == -1 && favouritesMessages.length > 0" class="favourite message d-flex justify-content-between align-items-center" v-for="(message, index) in favouritesMessages">
                     <h6 class="m-0">
-                      {{message.status == 'received' ? `Message received from ${message.contact}` : `Messange sent to ${message.contact}`}}
+                      {{message.status == 'received' ? `Message received from ${message.contact}` : `Message sent to ${message.contact}`}}
                     </h6>
 
                     <!-- Markup for text message -->
