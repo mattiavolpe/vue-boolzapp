@@ -256,11 +256,33 @@
                     <h6 class="m-0">
                       {{message.status == 'received' ? `Message received from ${message.contact}` : `Messange sent to ${message.contact}`}}
                     </h6>
-                    <div class="d-flex justify-content-between" :class="message.status === 'sent' ? 'sent_message' : 'received_message'">
+                    <div v-if="message.otherTypeMessage != 'audio'" class="d-flex justify-content-between" :class="message.status === 'sent' ? 'sent_message' : 'received_message'">
                       <span class="text">{{message.message}}</span>
                       <div class="right_message_section d-flex flex-column justify-content-between align-self-stretch">
                         <span class="text-end">
                           <i @click.stop="messageToRemove = index" class="fa-solid fa-chevron-down fa-fw text-end"></i>
+                        </span>
+                        <span class="message_time text-end align-self-end">{{message.date.slice(11, 16)}}
+                            <i v-if="message.status === 'sent'" class="fa-solid fa-check fa-fw"></i>
+                            <i v-if="message.status === 'sent'" class="fa-solid fa-check fa-fw"></i>
+                        </span>
+                      </div>
+                      <div class="dropdown icon_color" :class="{'d-none': index != messageToRemove}, {'d-flex flex-column align-items-end': index == messageToRemove}">
+                        <span @click="toggleFavourites(message)">
+                          <i class="fa-regular fa-square-minus fa-lg icon_color"></i>
+                          Remove from favourites
+                        </span>
+                      </div>
+                    </div>
+
+                    <!-- Markup for audio message -->
+                    <div v-else class="d-flex justify-content-between" :class="message.status === 'sent' ? 'sent_message' : 'received_message'">
+                      <audio controls>
+                        <source :src="message.src" :type="message.type">
+                      </audio>
+                      <div class="right_message_section d-flex flex-column justify-content-between align-self-stretch">
+                        <span class="text-end">
+                          <i class="fa-solid fa-chevron-down fa-fw text-end" @click.stop="checkIfRemovedFromSavedMessages(message), messageToRemove == index ? messageToRemove = -1 : messageToRemove = index, menuOpened = false"></i>
                         </span>
                         <span class="message_time text-end align-self-end">{{message.date.slice(11, 16)}}
                             <i v-if="message.status === 'sent'" class="fa-solid fa-check fa-fw"></i>
@@ -299,9 +321,9 @@
                   </div>
 
                   <i v-if="activeContact >= 0 && newMessage.trim() == '' && !isRecording && !audioPresent" @click.stop="startRecording()" class="fa-solid fa-microphone fa-lg icon_color"></i>
-                  <i v-else-if="activeContact >= 0 && newMessage.trim() == '' && isRecording" @click.stop="stopRecording()" class="fa-solid fa-stop fa-lg icon_color"></i>
+                  <i v-else-if="activeContact >= 0 && newMessage.trim() == '' && isRecording" @click.stop="stopRecording()" class="fa-solid fa-stop fa-beat fa-lg icon_color"></i>
                   <i v-else-if="newMessage.trim() != '' && !audioPresent" @click="sendNewMessage()" class="fa-solid fa-paper-plane fa-lg icon_color"></i>
-                  <i v-else-if="newMessage.trim() == '' && audioPresent" class="fa-solid fa-file-audio fa-lg icon_color" @click="sendNewMessage()"></i>
+                  <i v-else-if="newMessage.trim() == '' && audioPresent" class="fa-solid fa-file-audio fa-beat fa-lg icon_color" @click="sendNewMessage()"></i>
 
                   <!-- ADD EMPTY @click.stop TO ALLOW THE SELECTION OF MULTIPLE EMOJIS -->
                   <Picker @select="onSelectEmoji" class="emoji_wrapper" :class="{'d-none': !showEmoji}" @click.stop=""/>

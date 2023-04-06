@@ -550,13 +550,27 @@ createApp({
       if (message.saved != true) {
         message.saved = true;
         message.savedId = ++this.savedMessageId;
-        const messageToSave = {
-          contact: this.orderedContacts[this.activeContact].name,
-          date: message.date,
-          message: message.message,
-          status: message.status,
-          saved: true,
-          savedId: message.savedId,
+        let messageToSave;
+        if (message.otherTypeMessage != 'audio') {
+          messageToSave = {
+            contact: this.orderedContacts[this.activeContact].name,
+            date: message.date,
+            message: message.message,
+            status: message.status,
+            saved: true,
+            savedId: message.savedId,
+          }
+        } else {
+          messageToSave = {
+            contact: this.orderedContacts[this.activeContact].name,
+            date: message.date,
+            message: message.message,
+            status: message.status,
+            saved: true,
+            savedId: message.savedId,
+            otherTypeMessage: message.otherTypeMessage,
+            src: message.src,
+          }
         }
         this.favouritesMessages.push(messageToSave);
       } else {
