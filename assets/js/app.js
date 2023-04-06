@@ -632,6 +632,53 @@ createApp({
     onSelectEmoji(emoji) {
       this.newMessage += emoji.i;
     },
+
+    startRecording() {
+      let audioElements = document.querySelectorAll("audio");
+      console.log(audioElements);
+      audioElements.forEach(audioElement => {
+        if (!audioElement.paused) {
+          audioElement.pause();
+        }
+      });
+      vocalMessagesRecorder.start()
+      .catch(error => {
+        if (error.message.includes("Our recording audio system is not supported by this browser.")) {
+          alert("Our recording audio system is not supported by your browser. Please use Chrome, Firefox or a Chrome based browser.");
+        }
+
+        // Checks the type of error
+        switch (error.name) {
+          case 'AbortError': //error from navigator.mediaDevices.getUserMedia
+            console.log("An AbortError has occured.");
+            break;
+          case 'NotAllowedError': //error from navigator.mediaDevices.getUserMedia
+            console.log("A NotAllowedError has occured. User might have denied permission.");
+            break;
+          case 'NotFoundError': //error from navigator.mediaDevices.getUserMedia
+            console.log("A NotFoundError has occured.");
+            break;
+          case 'NotReadableError': //error from navigator.mediaDevices.getUserMedia
+            console.log("A NotReadableError has occured.");
+            break;
+          case 'SecurityError': //error from navigator.mediaDevices.getUserMedia or from the MediaRecorder.start
+            console.log("A SecurityError has occured.");
+            break;
+          case 'TypeError': //error from navigator.mediaDevices.getUserMedia
+            console.log("A TypeError has occured.");
+            break;
+          case 'InvalidStateError': //error from the MediaRecorder.start
+            console.log("An InvalidStateError has occured.");
+            break;
+          case 'UnknownError': //error from the MediaRecorder.start
+            console.log("An UnknownError has occured.");
+            break;
+          default:
+            console.log("An error occured with the error name " + error.name);
+        };
+      });
+      this.isRecording = true;
+    },
   },
   created() {
     this.orderContacts();
