@@ -256,6 +256,8 @@
                     <h6 class="m-0">
                       {{message.status == 'received' ? `Message received from ${message.contact}` : `Messange sent to ${message.contact}`}}
                     </h6>
+
+                    <!-- Markup for text message -->
                     <div v-if="message.otherTypeMessage != 'audio'" class="d-flex justify-content-between" :class="message.status === 'sent' ? 'sent_message' : 'received_message'">
                       <span class="text">{{message.message}}</span>
                       <div class="right_message_section d-flex flex-column justify-content-between align-self-stretch">
