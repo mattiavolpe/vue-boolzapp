@@ -23,6 +23,8 @@ Visualizzazione ora e ultimo messaggio inviato/ricevuto nella lista dei contatti
 
 import Picker from './emoji-picker.js';
 
+let temporaryAudio;
+
 const { createApp } = Vue;
 
 createApp({
@@ -221,7 +223,6 @@ createApp({
     orderContacts() {
       this.orderedContacts = [...this.contacts].sort((contactA, contactB) => {
         let splittedDatesAndTimes = this.getDatesAndTimes(contactA, contactB);
-        
         const completeDateAString = this.composeDateAndTimeString(splittedDatesAndTimes[0]);
         const completeDateBString = this.composeDateAndTimeString(splittedDatesAndTimes[1]);
         return completeDateBString - completeDateAString;
@@ -362,21 +363,54 @@ createApp({
     sendNewMessage() {
 
       // Avoids to send an empty message
-      if (this.newMessage === "" || this.newMessage.trim().length === 0) {
+      if ((this.newMessage === "" || this.newMessage.trim().length === 0) && !this.audioPresent) {
         return;
       }
 
-      const newMessageObject = {
-        date: this.getFormattedCurrentDateAndTime(),
-        message: this.newMessage,
-        status: 'sent'
+      let newMessageObject;
+
+      // Variables used for audio messages
+      let reader;
+      let base64URL;
+      let blobType;
+
+      // Checks if the message is a text message or an audio one
+      if(!this.audioPresent) {
+
+        // Creates the object for a text message
+        newMessageObject = {
+          date: this.getFormattedCurrentDateAndTime(),
+          message: this.newMessage,
+          status: 'sent'
+        }
+        // Sends the text message to the contact array of messages
+        this.orderedContacts[this.activeContact].messages.push(newMessageObject);
+      } else {
+        reader = new FileReader();
+
+        reader.onload = (e) => {
+          base64URL = e.target.result;
+
+          blobType = temporaryAudio.type.includes(";") ? temporaryAudio.type.substr(0, temporaryAudio.type.indexOf(';')) : temporaryAudio.type;
+          
+          // Creates the object for an audio message
+          newMessageObject = {
+            date: this.getFormattedCurrentDateAndTime(),
+            status: 'sent',
+            otherTypeMessage: 'audio',
+            src: base64URL,
+            type: blobType,
+          }
+
+          // Sends the audio message to the contact array of messages
+          this.orderedContacts[this.activeContact].messages.push(newMessageObject);
+        };
+        
+        reader.readAsDataURL(temporaryAudio);
       }
 
       // Sets the visibility back to true in case there are no other messages in the chat
       this.orderedContacts[this.activeContact].visible = true; 
-
-      // Sends the message to the contact array of messages
-      this.orderedContacts[this.activeContact].messages.push(newMessageObject);
 
       // Sets the ID of the contact to track who has to receive the following answer
       const contactWaitingForAnswer = this.orderedContacts[this.activeContact].id;
@@ -385,9 +419,10 @@ createApp({
       this.scrollTo("top");
       setTimeout(() => {
         this.scrollTo("bottom");
-      }, 1); // 1ms needed to make the scroll to bottom work as expected
+      }, 10); // 1ms needed to make the scroll to bottom work as expected
       this.activeContact = 0;
       this.newMessage = "";
+      this.audioPresent = false;
       this.sendAnswer(contactWaitingForAnswer);
     },
 
@@ -410,7 +445,7 @@ createApp({
 
         setTimeout(() => {
           this.scrollTo("bottom");
-        }, 1); // 1ms needed to make the scroll to bottom work as expected
+        }, 10); // 1ms needed to make the scroll to bottom work as expected
 
         setTimeout(() => {
           this.lastSeen = "Last seen";
@@ -633,6 +668,9 @@ createApp({
       this.newMessage += emoji.i;
     },
 
+    /**
+     * Starts a new audio recording section. If the API is not supported by the browser, alerts the user
+     */
     startRecording() {
       let audioElements = document.querySelectorAll("audio");
       console.log(audioElements);
@@ -674,10 +712,32 @@ createApp({
             console.log("An UnknownError has occured.");
             break;
           default:
-            console.log("An error occured with the error name " + error.name);
+            console.log(`An error occured with the error name ${error.name}`);
         };
       });
       this.isRecording = true;
+    },
+
+    /**
+     * Stops the recording session and saves the audio into a global variable
+     */
+    stopRecording() {
+      vocalMessagesRecorder.stop()
+      .then(audioAsblob => {
+        temporaryAudio = audioAsblob;
+      })
+      .catch(error => {
+      // Checks the type of error
+        switch (error.name) {
+          case 'InvalidStateError': //error from the MediaRecorder.stop
+            console.log("An InvalidStateError has occured.");
+            break;
+          default:
+            console.log(`An error occured with the error name ${error.name}`);
+        };
+      });
+      this.isRecording = false;
+      this.audioPresent = true;
     },
   },
   created() {

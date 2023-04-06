@@ -31,7 +31,7 @@
     <div id="app">
 
       <!-- CONTAINER FLUID ADDED TO HAVE A FULL-WIDTH AND FULL-HEIGHT ELEMENT TO CLICK ON TO MAKE DROPDOWNS DISAPPEAR -->
-      <div class="container-fluid p-0" @click="messageToRemove = -1, menuOpened = false, newContactWindow = false, showEmoji= false, isRecording = false, isRecording ? cancelRecording() : ''">
+      <div class="container-fluid p-0" @click="messageToRemove = -1, menuOpened = false, newContactWindow = false, showEmoji= false, isRecording ? stopRecording() : ''">
       
         <div class="my_container">
 
@@ -190,7 +190,9 @@
 
                   <!-- Displayed if a contact is selected -->
                   <div v-if="activeContact >= 0" class="message" v-for="(message, index) in orderedContacts[activeContact].messages">
-                    <div v-if="message.type != 'audio'" class="d-flex justify-content-between" :class="message.status === 'sent' ? 'sent_message' : 'received_message'">
+
+                    <!-- Markup for text message -->
+                    <div v-if="message.otherTypeMessage != 'audio'" class="d-flex justify-content-between" :class="message.status === 'sent' ? 'sent_message' : 'received_message'">
                       <span class="text">{{message.message}}</span>
                       <div class="right_message_section d-flex flex-column justify-content-between align-self-stretch">
                         <span class="text-end">
@@ -216,8 +218,12 @@
                         </span>
                       </div>
                     </div>
+
+                    <!-- Markup for audio message -->
                     <div v-else class="d-flex justify-content-between" :class="message.status === 'sent' ? 'sent_message' : 'received_message'">
-                      <audio controls class="audioContainer"></audio>
+                      <audio controls>
+                        <source :src="message.src" :type="message.type">
+                      </audio>
                       <div class="right_message_section d-flex flex-column justify-content-between align-self-stretch">
                         <span class="text-end">
                           <i class="fa-solid fa-chevron-down fa-fw text-end" @click.stop="checkIfRemovedFromSavedMessages(message), messageToRemove == index ? messageToRemove = -1 : messageToRemove = index, menuOpened = false"></i>
@@ -289,7 +295,7 @@
                 <div id="bottom_right" class="d-flex justify-content-around align-items-center px-3">
                   <i v-if="activeContact >= 0" class="fa-regular fa-face-smile icon_color fa-lg" @click.stop="showEmoji = !showEmoji"></i>
                   <div v-if="activeContact >= 0" class="position-relative">
-                    <input type="text" class="text_dark" name="newMessage" id="newMessage" placeholder="Write a new message" v-model.trim="newMessage" @keydown.enter="sendNewMessage()" @keydown="newMessage.trim() != '' && audioPresent ? cancelRecording() : ''">
+                    <input type="text" class="text_dark" name="newMessage" id="newMessage" placeholder="Write a new message" v-model.trim="newMessage" @keydown.enter="sendNewMessage()" @keydown="newMessage.trim() != '' && audioPresent ? audioPresent = false : ''">
                   </div>
 
                   <i v-if="activeContact >= 0 && newMessage.trim() == '' && !isRecording && !audioPresent" @click.stop="startRecording()" class="fa-solid fa-microphone fa-lg icon_color"></i>

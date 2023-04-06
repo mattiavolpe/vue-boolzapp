@@ -9,6 +9,8 @@ Still a work in progress, but the following features are already included:
 ---
 - **Dark / Light mode** toggler.
 ---
+- **Audio messages**: you can now **send audio messages** too.
+---
 - You can **add a new contact** providing at least it's name. If you don't provide an image, the **contact's initials** will be used.
 ---
 - You can **search** a contact name (**no matter** if you type the **beginning** of it's name, the **end**, a **middle part**, if you type **upper-case**, **lower-case** or **both**) and **chat with him**, also if the contact **has been removed from the contact list because you have removed all the messages with him**.
@@ -34,6 +36,6 @@ Still a work in progress, but the following features are already included:
 - You can insert **emoji** in your messages.
 ---
 - Whenever a **new message** is sent / received, the chat window will **automatically scroll** to the newest message.
-- When you **send a new message** the **last seen** sentence will **update** with **"Is typing"**, **"Online"** and finally **back to the time of the last message**
+- When you **send a new message** the **last seen** sentence will **update** with **"Is typing"**, **"Online"** and finally **back to the time of the last message**.
 ---
-- Each contact will generate a **random answer** once he receives a new message from the user
+- Each contact will generate a **random answer** once he receives a new message from the user.

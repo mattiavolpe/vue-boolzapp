@@ -75,6 +75,14 @@ body {
   filter: brightness(0.8);
 }
 
+audio {
+  height: 20px;
+}
+
+audio::-webkit-media-controls-panel {
+  background-color: var(--bzap_sent);
+}
+
 /* #endregion Common */
 
 /* #region Utility */
@@ -479,6 +487,15 @@ body {
     height: calc(100% - 140px);
   }
 
+  .no_active_contact {
+    padding: 2rem;
+    font-size: 1.5rem;
+  }
+  
+}
+
+@media screen and (min-width: 992px) {
+  
   #right_main_content .message {
     padding: 6px 5%;
   }
@@ -486,11 +503,6 @@ body {
   #right_main_content .sent_message,
   #right_main_content .received_message {
     width: 45%;
-  }
-
-  .no_active_contact {
-    padding: 2rem;
-    font-size: 1.5rem;
   }
   
 }
