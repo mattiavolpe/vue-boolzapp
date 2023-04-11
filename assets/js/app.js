@@ -386,11 +386,19 @@ createApp({
         // Sends the text message to the contact array of messages
         this.orderedContacts[this.activeContact].messages.push(newMessageObject);
 
+        // Sets the visibility back to true in case there were no other messages in the chat
+        this.orderedContacts[this.activeContact].visible = true; 
+
+        // Sets the ID of the contact to track who has to receive the following answer
+        let contactWaitingForAnswer = this.orderedContacts[this.activeContact].id;
+
+        this.orderContacts();
         nextTick(() => {
           this.activeContact = 0;
           this.scrollTo("top");
           this.scrollTo("bottom");
           this.newMessage = "";
+          this.sendAnswer(contactWaitingForAnswer);
         });
       } else {
 
@@ -415,6 +423,12 @@ createApp({
           // Sends the audio message to the contact array of messages
           this.orderedContacts[this.activeContact].messages.push(newMessageObject);
 
+          // Sets the visibility back to true in case there were no other messages in the chat
+          this.orderedContacts[this.activeContact].visible = true; 
+
+          // Sets the ID of the contact to track who has to receive the following answer
+          let contactWaitingForAnswer = this.orderedContacts[this.activeContact].id;
+
           this.orderContacts();
           nextTick(() => {
             this.activeContact = 0;
@@ -422,19 +436,12 @@ createApp({
             this.scrollTo("bottom");
             this.newMessage = "";
             this.audioPresent = false;
+            this.sendAnswer(contactWaitingForAnswer);
           });
         };
         
         reader.readAsDataURL(temporaryAudio);
       }
-
-      // Sets the visibility back to true in case there were no other messages in the chat
-      this.orderedContacts[this.activeContact].visible = true; 
-
-      // Sets the ID of the contact to track who has to receive the following answer
-      const contactWaitingForAnswer = this.orderedContacts[this.activeContact].id;
-
-      this.sendAnswer(contactWaitingForAnswer);
     },
 
     /**
