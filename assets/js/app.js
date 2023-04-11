@@ -25,7 +25,7 @@ import Picker from './emoji-picker.js';
 
 let temporaryAudio;
 
-const { createApp } = Vue;
+const { createApp, nextTick } = Vue;
 
 createApp({
   data() {
@@ -385,6 +385,13 @@ createApp({
         }
         // Sends the text message to the contact array of messages
         this.orderedContacts[this.activeContact].messages.push(newMessageObject);
+
+        nextTick(() => {
+          this.activeContact = 0;
+          this.scrollTo("top");
+          this.scrollTo("bottom");
+          this.newMessage = "";
+        });
       } else {
 
         reader = new FileReader();
@@ -407,27 +414,26 @@ createApp({
 
           // Sends the audio message to the contact array of messages
           this.orderedContacts[this.activeContact].messages.push(newMessageObject);
+
+          this.orderContacts();
+          nextTick(() => {
+            this.activeContact = 0;
+            this.scrollTo("top");
+            this.scrollTo("bottom");
+            this.newMessage = "";
+            this.audioPresent = false;
+          });
         };
         
         reader.readAsDataURL(temporaryAudio);
       }
 
-      // Sets the visibility back to true in case there are no other messages in the chat
+      // Sets the visibility back to true in case there were no other messages in the chat
       this.orderedContacts[this.activeContact].visible = true; 
 
       // Sets the ID of the contact to track who has to receive the following answer
       const contactWaitingForAnswer = this.orderedContacts[this.activeContact].id;
 
-      setTimeout(() => {
-        this.orderContacts();
-        this.scrollTo("top");
-        setTimeout(() => {
-          this.scrollTo("bottom");
-        }, 50); // 1ms needed to make the scroll to bottom work as expected
-        this.newMessage = "";
-        this.audioPresent = false;
-        this.activeContact = 0;
-      }, 100);
       this.sendAnswer(contactWaitingForAnswer);
     },
 
@@ -448,10 +454,9 @@ createApp({
         // Sends the answer to the contact with the provided ID, so the answer is delivered to the right contact also if the user clicks on another contact in the 1 second waiting time
         this.orderedContacts[this.orderedContacts.findIndex(contact => contact.id == contactId)].messages.push(newAnswer);
 
-        setTimeout(() => {
+        nextTick(() => {
           this.scrollTo("bottom");
-        }, 50); // 1ms needed to make the scroll to bottom work as expected
-
+        });
         setTimeout(() => {
           this.lastSeen = "Last seen";
         }, 2500);
@@ -666,13 +671,14 @@ createApp({
      */
     addNewContact() {
       if(this.newContactName.length == 0 || (this.newContactImage != "" && this.newContactImage.length < 3)) {
-        return
+        return;
       }        
       const newContactBaseObject = {
         name: this.newContactName,
         visible: false,
         messages: [],
         avatar: this.newContactImage != "" ? this.newContactImage : "",
+        id: ++this.counter,
       }
       this.contacts.push(newContactBaseObject);
       this.orderContacts();
@@ -765,6 +771,8 @@ createApp({
   },
   created() {
     this.orderContacts();
-    this.orderedContacts.forEach(contact => contact.id = ++this.counter);
+    nextTick(() => {
+      this.orderedContacts.forEach(contact => contact.id = ++this.counter);
+    })
   },
 }).component('Picker', Picker).mount('#app');
